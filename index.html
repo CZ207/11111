@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Griffin (李睿泽) | 复合型新质人才</title>
+    <style>
+        /* ================= 核心设计令牌 (Dark Mode + Teal Accent) ================= */
+        :root {
+            --bg-main: #020617; 
+            --bg-card: rgba(15, 23, 42, 0.5); 
+            --bg-card-hover: rgba(30, 41, 59, 0.8);
+            
+            --text-primary: #f8fafc; 
+            --text-secondary: #cbd5e1; 
+            --text-muted: #64748b; 
+            
+            --accent-color: #14b8a6; 
+            --accent-dark: #0d9488; 
+            --accent-bg: rgba(20, 184, 166, 0.15); 
+            --accent-glow: rgba(20, 184, 166, 0.4); 
+            
+            --border-light: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(20, 184, 166, 0.4);
+            --transition-smooth: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --transition-fast: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            --font-main: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; background-color: var(--bg-main); }
+
+        body {
+            font-family: var(--font-main); color: var(--text-primary);
+            line-height: 1.8; -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; position: relative;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; position: relative; z-index: 10; }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(20, 184, 166, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(20, 184, 166, 0.6); }
+
+        /* ================= 全局动态极光与星空粒子 ================= */
+        .aurora-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; overflow: hidden; }
+        .aurora-blob { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12; animation: floatBlob 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); }
+        .blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, #14b8a6, transparent 60%); animation-delay: 0s; }
+        .blob-2 { bottom: -20%; right: -10%; width: 70vw; height: 70vw; background: radial-gradient(circle, #0284c7, transparent 60%); animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 30%; width: 50vw; height: 50vw; background: radial-gradient(circle, #0d9488, transparent 60%); animation-delay: -10s; opacity: 0.08; }
+
+        @keyframes floatBlob { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(5%, 5%) scale(1.1); } 100% { transform: translate(-5%, -5%) scale(0.9); } }
+
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; opacity: 0.5; pointer-events: none; }
+        #cursor-glow { position: fixed; top: 0; left: 0; width: 400px; height: 400px; background: radial-gradient(circle, rgba(20, 184, 166, 0.12) 0%, transparent 60%); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: opacity 0.3s; mix-blend-mode: screen; }
+        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent-dark), var(--accent-color), #fff); width: 0%; z-index: 2000; box-shadow: 0 0 15px var(--accent-glow); }
+
+        /* ================= 导航栏 ================= */
+        nav { position: fixed; top: 0; left: 0; width: 100%; height: 75px; background: rgba(2, 6, 23, 0.3); backdrop-filter: blur(25px) saturate(200%); -webkit-backdrop-filter: blur(25px) saturate(200%); border-bottom: 1px solid rgba(255,255,255,0.03); z-index: 1000; display: flex; align-items: center; transition: var(--transition-smooth); }
+        nav.scrolled { background: rgba(15, 23, 42, 0.85); box-shadow: 0 10px 40px rgba(0,0,0,0.6); border-bottom-color: var(--border-light); }
+        .nav-inner { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 1px; color: var(--text-primary); }
+        .logo span { color: var(--accent-color); text-shadow: 0 0 10px var(--accent-glow); }
+        .status-badge { display: flex; align-items: center; gap: 6px; background: rgba(20, 184, 166, 0.1); border: 1px solid rgba(20, 184, 166, 0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: var(--accent-color); }
+        .status-dot { width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; animation: breathe 2s infinite; }
+        @keyframes breathe { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+
+        .nav-links { display: flex; gap: 10px; }
+        .nav-links a { position: relative; padding: 8px 20px; font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); border-radius: 30px; transition: var(--transition-fast); z-index: 1; }
+        .nav-links a::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.08); border-radius: 30px; z-index: -1; transform: scale(0.5); opacity: 0; transition: var(--transition-fast); }
+        .nav-links a:hover { color: #fff; }
+        .nav-links a:hover::before { transform: scale(1); opacity: 1; box-shadow: inset 0 0 15px var(--accent-bg); }
+
+        /* ================= 首屏 ================= */
+        #hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+        .hero-content { position: relative; z-index: 10; max-width: 800px; margin-top: 50px; }
+        .greeting { font-size: 0.95rem; color: var(--accent-color); font-weight: 700; letter-spacing: 5px; margin-bottom: 20px; text-transform: uppercase; }
+        .hero-title { font-size: 4.8rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 25px; line-height: 1.1; background: linear-gradient(90deg, #fff 0%, #cbd5e1 40%, var(--accent-color) 50%, #cbd5e1 60%, #fff 100%); background-size: 200% auto; background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: shimmerText 5s linear infinite; text-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        @keyframes shimmerText { to { background-position: 200% center; } }
+        .typewriter-container { font-size: 1.6rem; font-weight: 400; color: var(--text-secondary); margin-bottom: 40px; height: 40px; }
+        .typewriter-text { color: var(--accent-color); font-weight: 800; border-right: 3px solid var(--accent-color); animation: blink 0.8s infinite; padding-right: 5px; text-shadow: 0 0 15px var(--accent-glow); }
+        .hero-slogan { font-size: 1.2rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto 50px; line-height: 1.8; }
+        
+        .action-btns { display: flex; justify-content: center; gap: 20px; }
+        .btn { padding: 14px 35px; border-radius: 50px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition-smooth); display: inline-flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .btn-primary { background: var(--accent-color); color: #020617; box-shadow: 0 0 20px var(--accent-glow); border: 1px solid var(--accent-color); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 35px var(--accent-glow); background: #fff; border-color: #fff; }
+        .btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-light); }
+        .btn-secondary:hover { background: var(--bg-card-hover); border-color: var(--accent-color); color: var(--accent-color); box-shadow: inset 0 0 20px var(--accent-bg); }
+
+        /* ================= 通用区块 ================= */
+        section { padding: 120px 0; position: relative; z-index: 10; }
+        .section-title { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 70px; text-align: center; color: #fff; }
+        .section-title span { color: var(--accent-color); text-shadow: 0 0 15px var(--accent-glow); }
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; } .delay-3 { transition-delay: 0.3s; }
+
+        /* ================= 重构：About Me 模块 (融合文件2) ================= */
+        .glass-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 24px; padding: 40px; backdrop-filter: blur(20px); transition: var(--transition-smooth); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .glass-card:hover { transform: translateY(-5px); border-color: var(--border-hover); background: var(--bg-card-hover); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 30px var(--accent-bg); }
+        
+        .profile-grid { display: grid; grid-template-columns: 5fr 7fr; gap: 30px; align-items: stretch; }
+        
+        /* 学业卡片 */
+        .acad-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+        .acad-icon-box { width: 60px; height: 60px; border-radius: 16px; background: linear-gradient(135deg, var(--accent-color), #059669); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(20,184,166,0.3); font-size: 1.8rem; }
+        .acad-title { font-size: 1.5rem; font-weight: 800; color: #fff; line-height: 1.2; }
+        .acad-subtitle { color: var(--accent-color); font-size: 0.9rem; font-weight: 600; margin-top: 5px; }
+        
+        .acad-list { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
+        .acad-item h4 { font-size: 1rem; color: #fff; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .acad-item p { font-size: 0.9rem; color: var(--text-secondary); padding-left: 24px; border-left: 2px solid rgba(255,255,255,0.1); line-height: 1.6; }
+        .acad-item .mono-tag { font-family: monospace; color: var(--accent-color); font-size: 0.85rem; }
+        
+        .acad-footer { margin-top: auto; padding-top: 25px; border-top: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: flex-end; }
+        .acad-rank-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; display: block; }
+        .acad-rank-value { font-size: 1.5rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .acad-rank-value span { font-size: 1rem; font-weight: 400; color: var(--text-muted); }
+
+        /* 雷达图与技能列表 */
+        .radar-layout { display: flex; gap: 20px; align-items: center; height: 100%; }
+        .radar-svg-container { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
+        .radar-skills-list { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+        
+        .r-skill-item { padding: 15px; border-radius: 16px; cursor: pointer; transition: var(--transition-fast); border: 1px solid transparent; background: rgba(255,255,255,0.02); }
+        .r-skill-item:hover { background: rgba(255,255,255,0.05); }
+        .r-skill-item.active { background: var(--accent-bg); border-color: var(--accent-color); box-shadow: 0 0 15px var(--accent-glow); }
+        .r-skill-header { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; font-weight: 700; color: var(--text-secondary); }
+        .r-skill-item.active .r-skill-header { color: #fff; }
+        .r-skill-header span { font-size: 1.2rem; }
+        .r-skill-desc { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.4s ease; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+        .r-skill-item.active .r-skill-desc { max-height: 100px; opacity: 1; margin-top: 10px; }
+
+        /* ================= 履历模块重构 (GlassCard Grid) ================= */
+        .tabs-header { display: flex; justify-content: center; gap: 20px; margin-bottom: 50px; }
+        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid transparent; padding: 12px 30px; font-size: 1rem; font-weight: 700; color: var(--text-muted); cursor: pointer; border-radius: 30px; transition: var(--transition-fast); }
+        .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .tab-btn.active { background: var(--accent-bg); border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 0 20px var(--accent-glow); }
+        
+        .tab-content { display: none; animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .tab-content.active { display: block; }
+        
+        .exp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .exp-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 20px; padding: 30px; backdrop-filter: blur(10px); transition: var(--transition-smooth); display: flex; flex-direction: column; }
+        .exp-card:hover { transform: translateY(-5px); border-color: var(--border-hover); background: var(--bg-card-hover); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        
+        .exp-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light); }
+        .exp-badge { font-size: 0.8rem; font-family: monospace; padding: 4px 12px; background: rgba(20,184,166,0.1); color: var(--accent-color); border: 1px solid rgba(20,184,166,0.2); border-radius: 6px; }
+        .exp-company { font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 5px; transition: var(--transition-fast); }
+        .exp-card:hover .exp-company { color: var(--accent-color); }
+        .exp-role { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 8px; margin-bottom: 25px; }
+        /* tighter spacing for cards with only two lines */
+        .exp-card.tight-spacing .exp-role { margin-bottom: 12px; }
+        
+        .exp-highlights { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+        .exp-highlights li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.7; /* 适当增加行高 */
+    text-align: justify; /* 开启两端对齐 */
+    position: relative;
+    padding-left: 1.2rem; /* 为小图标留出空间 */
+    margin-bottom: 10px;
+    display: block; /* 恢复为块级，确保文本流正常 */
+}
+
+.exp-highlights li::before {
+    content: '▹';
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: bold;
+}
+        .exp-highlights li::before { content: '▹'; color: var(--accent-color); font-weight: bold; }
+        
+       .data-hl {
+    color: var(--accent-color);
+    font-weight: 800;
+    font-size: inherit; /* 关键：保持与正文等大，避免撑开行高 */
+    text-shadow: 0 0 8px rgba(20, 184, 166, 0.3);
+    padding: 0 1px; /* 极小的左右间距，让数字不与文字黏连 */
+    display: inline; /* 确保是行内元素 */
+}
+#cursor-glow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 20px; height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                background 0.3s;
+    mix-blend-mode: difference; /* 反色沉浸感核心 */
+}
+
+#cursor-glow.magnetic-active {
+    width: 60px; height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* 增强卡片悬浮重量感 */
+.glass-card:hover, .exp-card:hover, .hobby-card:hover, .btn:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+/* Bento Grid 便当网格基础布局 */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(220px, auto);
+    gap: 24px;
+}
+
+/* 错落的模块尺寸 */
+.bento-2x2 { grid-column: span 2; grid-row: span 2; } /* 核心高光 */
+.bento-2x1 { grid-column: span 2; grid-row: span 1; } /* 中等重点 */
+.bento-1x2 { grid-column: span 1; grid-row: span 2; } /* 纵向长卡 */
+.bento-1x1 { grid-column: span 1; grid-row: span 1; } /* 辅助卡片 */
+
+/* 移动端优雅降级 */
+@media (max-width: 900px) {
+    .bento-grid { grid-template-columns: repeat(2, 1fr); }
+    .bento-2x2, .bento-2x1 { grid-column: span 2; }
+}
+@media (max-width: 600px) {
+    .bento-grid { grid-template-columns: 1fr; }
+    .bento-2x2, .bento-2x1, .bento-1x2, .bento-1x1 { grid-column: span 1; grid-row: auto; }
+}
+
+/* 吸顶层叠容器 */
+.sticky-stack-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; 
+    padding-bottom: 10vh; 
+}
+
+/* 被赋予层叠属性的卡片 */
+.sticky-card {
+    position: sticky;
+    top: 120px; 
+    transform-origin: top center;
+    transition: transform 0.1s linear, opacity 0.1s linear; 
+}
+
+        /* ================= 轨迹地图 (Journey) ================= */
+        .map-container { width: 100%; height: 400px; background: rgba(15, 23, 42, 0.4); border-radius: 24px; border: 1px solid var(--border-light); overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: inset 0 0 50px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+        @keyframes drawPath { to { stroke-dashoffset: 0; } }
+        .path-animated { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawPath 4s ease-out forwards; filter: drop-shadow(0 0 8px rgba(20,184,166,0.6)); }
+        .city-node { cursor: pointer; transition: var(--transition-smooth); }
+        .city-node:hover circle:nth-child(2) { transform: scale(1.5); fill: var(--accent-color); }
+        .city-node:hover text { fill: var(--accent-color); text-shadow: 0 0 10px var(--accent-glow); }
+        .city-info { opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .city-node:hover .city-info { opacity: 1; }
+
+        /* ================= 荣誉与软实力 ================= */
+        .honors-flex { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 60px; }
+        .honors-flex:hover .honor-badge { opacity: 0.3; filter: blur(2px); transform: scale(0.98); }
+        .honor-badge { background: rgba(255,255,255,0.03); border: 1px solid var(--border-light); padding: 14px 26px; border-radius: 40px; font-size: 0.95rem; font-weight: 600; color: var(--text-secondary); backdrop-filter: blur(10px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; gap: 8px; cursor: default; }
+        .honors-flex .honor-badge:hover { opacity: 1; filter: blur(0); transform: scale(1.08); z-index: 10; color: #fff; border-color: var(--accent-color); background: var(--bg-card-hover); box-shadow: 0 15px 30px rgba(0,0,0,0.5), inset 0 0 20px var(--accent-bg), 0 0 20px var(--accent-glow); }
+
+        .hobbies-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; perspective: 1000px; }
+        .hobby-card { width: 100%; height: 180px; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .hobby-card:hover { transform: rotateY(180deg); }
+        .hobby-front, .hobby-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; padding: 25px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--bg-card); border: 1px solid var(--border-light); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .hobby-front { z-index: 2; }
+        .hobby-back { transform: rotateY(180deg); background: rgba(20, 184, 166, 0.1); border-color: var(--accent-color); box-shadow: inset 0 0 20px var(--accent-bg); }
+        .hobby-icon { font-size: 2.5rem; margin-bottom: 15px; filter: grayscale(30%) brightness(0.9); }
+        .hobby-title { font-size: 1.1rem; font-weight: 800; color: #fff; }
+        .back-title { color: var(--accent-color); font-size: 0.85rem; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+        .back-desc { font-size: 0.9rem; color: #fff; font-weight: 600; line-height: 1.5; }
+        
+        /* 音乐长卡片 (Ariana Grande 定制) */
+        .music-long-card { grid-column: span 3; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 20px; padding: 25px 35px; display: flex; align-items: center; gap: 25px; transition: var(--transition-smooth); overflow: hidden; position: relative; }
+        .music-long-card:hover { transform: translateY(-5px); border-color: rgba(236, 72, 153, 0.4); box-shadow: 0 15px 30px rgba(0,0,0,0.4), inset 0 0 30px rgba(236, 72, 153, 0.05); }
+        .music-bg-glow { position: absolute; right: 0; top: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(236, 72, 153, 0.15), transparent 70%); filter: blur(20px); pointer-events: none; transition: all 0.5s ease; }
+        .music-long-card:hover .music-bg-glow { transform: scale(1.5); opacity: 0.8; }
+        
+        .vinyl-record { width: 70px; height: 70px; border-radius: 50%; background: #111; border: 4px solid #333; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(0,0,0,0.5); animation: spinRecord 4s linear infinite; flex-shrink: 0; position: relative; }
+        .vinyl-record::before { content: ''; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #ec4899, #8b5cf6); border: 2px solid #000; }
+        .vinyl-record::after { content: ''; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 50%; }
+        @keyframes spinRecord { 100% { transform: rotate(360deg); } }
+        
+        .music-info h4 { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 5px; }
+        .music-info p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
+        .music-info span { color: #ec4899; font-weight: 700; }
+
+        /* ================= AI 全息助理 (Vanilla JS 重构) ================= */
+        #chat-widget { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; flex-direction: column; align-items: flex-end; }
+        #chat-toggle { background: var(--bg-main); border: 1px solid var(--accent-dark); color: var(--accent-color); padding: 12px 24px; border-radius: 30px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 0 20px var(--accent-bg); transition: var(--transition-smooth); }
+        #chat-toggle:hover { background: var(--accent-color); color: #000; transform: scale(1.05); box-shadow: 0 0 25px var(--accent-glow); }
+        #chat-toggle svg { width: 18px; height: 18px; fill: currentColor; }
+        
+        #chat-window { display: none; width: 340px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid var(--accent-dark); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); transform-origin: bottom right; animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); margin-bottom: 15px; }
+        @keyframes scaleIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .chat-header { background: linear-gradient(90deg, rgba(13,148,136,0.3) 0%, rgba(15,23,42,1) 100%); padding: 15px 20px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
+        .chat-title { font-weight: 700; color: #fff; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+        .chat-title .dot { width: 8px; height: 8px; background: var(--accent-color); border-radius: 50%; box-shadow: 0 0 8px var(--accent-color); animation: blink 2s infinite; }
+        .chat-close { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .chat-close:hover { color: #fff; }
+        .chat-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; }
+        
+        .chat-body { height: 320px; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; }
+        .msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 0.9rem; line-height: 1.5; word-wrap: break-word; }
+        .msg.bot { background: rgba(255,255,255,0.05); border: 1px solid var(--border-light); border-bottom-left-radius: 4px; color: var(--text-secondary); align-self: flex-start; }
+        .msg.user { background: var(--accent-bg); border: 1px solid rgba(20,184,166,0.3); border-bottom-right-radius: 4px; color: #fff; align-self: flex-end; }
+        .msg.loading { align-self: flex-start; background: transparent; border: none; color: var(--accent-color); font-weight: bold; font-style: italic; }
+        
+        .chat-input-area { padding: 12px; background: #000; border-top: 1px solid var(--border-light); display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-light); border-radius: 12px; padding: 10px 15px; color: #fff; outline: none; transition: 0.2s; }
+        .chat-input-area input:focus { border-color: var(--accent-color); }
+        .chat-input-area button { background: rgba(20,184,166,0.15); border: 1px solid rgba(20,184,166,0.3); color: var(--accent-color); width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .chat-input-area button:hover { background: var(--accent-color); color: #000; }
+        .chat-input-area button svg { width: 18px; height: 18px; fill: currentColor; }
+
+        footer { text-align: center; padding: 50px 0; margin-top: 60px; font-size: 0.9rem; color: var(--text-muted); font-weight: 500; background: rgba(0,0,0,0.5); border-top: 1px solid var(--border-light); position: relative; z-index: 10; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes blink { 50% { border-color: transparent; } }
+
+        @media (max-width: 992px) {
+            .profile-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 3.5rem; }
+            .hobbies-grid { grid-template-columns: 1fr; }
+            .music-long-card { grid-column: span 1; flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 768px) {
+            .nav-links, .status-badge { display: none; }
+            .exp-top { flex-direction: column; align-items: flex-start; gap: 10px; }
+            #cursor-glow, #particle-canvas { display: none; }
+            .radar-layout { flex-direction: column; }
+        }
+
+        /* ================= 弹窗样式 (Modal) ================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(2, 6, 23, 0.6); /* 深色半透明背景 */
+    backdrop-filter: blur(8px); /* 毛玻璃模糊效果 */
+    z-index: 99999; /* 确保在最顶层 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* 默认隐藏的过渡动画设置 */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* 弹窗出现时的激活状态 */
+.modal-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: var(--bg-card, rgba(15, 23, 42, 0.8));
+    border: 1px solid var(--border-light, rgba(255, 255, 255, 0.08));
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 
+                0 0 20px var(--accent-glow, rgba(20, 184, 166, 0.2));
+    position: relative;
+    text-align: center;
+    color: var(--text-primary, #f8fafc);
+    
+    /* 物理弹簧入场动效 */
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); 
+}
+
+/* 激活时的弹窗本体位置 */
+.modal-overlay.active .modal-content {
+    transform: translateY(0) scale(1);
+}
+
+.modal-title {
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: var(--accent-color, #14b8a6);
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.contact-info p {
+    font-size: 1.1rem;
+    margin: 12px 0;
+    color: var(--text-secondary, #cbd5e1);
+}
+
+/* 右上角关闭按钮 */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    color: var(--text-muted, #64748b);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.close-btn:hover {
+    color: var(--accent-color, #14b8a6);
+    transform: scale(1.2);
+}
+    </style>
+</head>
+<body>
+    
+    <div class="aurora-bg"><div class="aurora-blob blob-1"></div><div class="aurora-blob blob-2"></div><div class="aurora-blob blob-3"></div></div>
+    
+    <div id="cursor-glow"></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <div id="progress-bar"></div>
+
+    <nav id="navbar">
+        <div class="nav-inner">
+            <div class="logo-area">
+                <div class="logo">Griffin<span>.</span></div>
+                <div class="status-badge"><div class="status-dot"></div> Open to Work</div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#hero">HOME</a></li>
+                <li><a href="#about">About Me</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#journey">Journey</a></li>
+                <li><a href="#honors">Honors</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="container hero-content">
+            <div class="greeting reveal">HELLO, I'M</div>
+            <h1 class="hero-title reveal delay-1">李睿泽 Griffin</h1>
+            <div class="typewriter-container reveal delay-1">
+                我是 <span class="typewriter-text" id="typewriter"></span>
+            </div>
+            <p class="hero-slogan reveal delay-2">
+                “ 跨越语言与技术的边界，以复合能力驱动业务破局。 ”<br>
+                既具备传统英专生的深厚底蕴，又在AI时代下懂技术、善沟通、精运营。
+            </p>
+            <div class="action-btns reveal delay-3">
+                <button class="btn btn-primary" onclick="showContactInfo()"> 联系我 </button>
+                <a href="#about" class="btn btn-secondary">深入了解</a>
+            </div>
+        </div>
+    </section>
+<div id="contactModal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeContactInfo()">&times;</span>
+        <h2 class="modal-title">Get in Touch with Me</h2>
+        <div class="contact-info">
+            <p><strong> 电话：</strong>17391688181</p>
+            <p><strong> 邮箱：</strong>17391688181@163.com</p>
+        </div>
+    </div>
+</div>
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title reveal">Profile & <span>Skills</span></h2>
+            
+            <div class="profile-grid">
+                <div class="glass-card reveal" style="display: flex; flex-direction: column;">
+                    <div class="acad-header">
+                        <div class="acad-icon-box">🎓</div>
+                        <div>
+                            <div class="acad-title">Academic Base</div>
+                            <div class="acad-subtitle">西安外国语大学 · 2027届本科</div>
+                        </div>
+                    </div>
+                    
+                    <div class="acad-list">
+                        <div class="acad-item">
+                            <h4><span style="font-size: 1.2rem;"></span> 计算机辅助翻译 (CAT)</h4>
+                            <p>主修区域国别通论、批判性阅读与写作、国际商法、法律翻译、英语听力与综述 等语言类科目与计算机类目课程。致力于成为连接人文与技术的桥梁。
+                                第二外语法语，具备基础法语能力。</p>
+                        </div>
+                        <div class="acad-item">
+                            <h4><span style="font-size: 1.2rem;"></span> 计算机类目课程</h4>
+                            <p>精通 <span class="mono-tag">Python  / SQL  / HTML5  / R语言 </span> 等程序语言。探索大语言模型在工作流中的实际落地应用。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="acad-footer">
+                        <div>
+                            <span class="acad-rank-label">综测排名 (持续上升)</span>
+                            <div class="acad-rank-value"><span style="color: #fbbf24;"></span> Top 5% <span>(7/130)</span></div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="acad-rank-label">核心语言证书</span>
+                            <div style="font-weight: 800; color: #fff; font-size: 1.1rem;">TEM-4 / 二甲</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card reveal delay-1">
+                    <h3 style="margin-bottom: 20px;"> Core Competencies 核心能力</h3>
+                    <div class="radar-layout">
+                        <div class="radar-svg-container" id="radar-chart">
+                            </div>
+                        
+                        <div class="radar-skills-list">
+                            <div class="r-skill-item active" data-skill="lang">
+                                <div class="r-skill-header"><span></span> 语言与跨文化</div>
+                                <div class="r-skill-desc">英语TEM专业四级。丰富的跨国论坛及外宾陪同口译经验，精通CAT工具，具备极强的跨文化沟通力。</div>
+                            </div>
+                            <div class="r-skill-item" data-skill="tech">
+                                <div class="r-skill-header"><span></span> 新质技术应用</div>
+                                <div class="r-skill-desc">熟练 Python/SQL 数据分析与 HTML5 前端开发。善用大语言/绘图模型优化工作流，具备极客思维。</div>
+                            </div>
+                            <div class="r-skill-item" data-skill="hr">
+                                <div class="r-skill-header"><span></span> 组织与敏捷执行</div>
+                                <div class="r-skill-desc">字节跳动高密度招聘执行经验，超大型国际赛事统筹，定目标、扛高压，快速推进业务落地。</div>
+                            </div>
+                            <div class="r-skill-item" data-skill="logic">
+                                <div class="r-skill-header"><span></span> 逻辑思辨表达</div>
+                                <div class="r-skill-desc">外研社辩论赛一等奖、最佳辩手。具备极强的逻辑拆解、问题诊断与公众演讲表达能力。</div>
+                            </div>
+                            <div class="r-skill-item" data-skill="media">
+                                <div class="r-skill-header"><span></span> 视觉媒体策划</div>
+                                <div class="r-skill-desc">精通 PS/AI/PR/Canva 等全套视觉软件。独立摄制纪录片，操盘校级融媒体矩阵，网感极佳。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="container reveal">
+            <h2 class="section-title">Professional <span>Experience</span></h2>
+            
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="openTab('work')"> 工作经历</button>
+                <button class="tab-btn" onclick="openTab('project')"> 项目经历</button>
+                <button class="tab-btn" onclick="openTab('campus')"> 校园经历</button>
+            </div>
+
+            <div id="work" class="tab-content active">
+                <div class="sticky-stack-container">
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2025.07 - 2025.08</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 实习</span>
+                        </div>
+                        <div class="exp-company">字节跳动</div>
+                        <div class="exp-role"> 人力资源专员 (HR)</div>
+                        <ul class="exp-highlights">
+                            <li>支持抖音等高审业务线后端专业岗位招聘。</li>
+                            <li>精准勾勒画像，月均终面通过 <span class="data-hl">15+</span>，高职级人才寻访 <span class="data-hl">Top 1</span>。</li>
+                            <li>独立进行要闻、时政、影视等多领域业务线人才知识背景面试。</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2024.07 - 2024.09</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 实习</span>
+                        </div>
+                        <div class="exp-company">中国外文局亚太传播中心</div>
+                        <div class="exp-role"> 国际传播编译</div>
+                        <ul class="exp-highlights">
+                            <li>精准完成商务等专业文件互译，翻译量超 <span class="data-hl">2万字</span>。</li>
+                            <li>助力亚太地区外宣报道编译与润色质量提升。</li>
+                            <li>保障中英双语术语准确性，首发通过率达 <span class="data-hl">98%+</span>。</li>
+                        </ul>
+                    </div>
+
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2026.01 - 2026.03</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 实习</span>
+                        </div>
+                        <div class="exp-company">新东方教育科技集团</div>
+                        <div class="exp-role"> 学术讲师</div>
+                        <ul class="exp-highlights">
+                            <li>累计完成 <span class="data-hl">100+ 小时</span> 雅思全科高质量授课。</li>
+                            <li>独立输出系统性课程反馈报告，助力学生提分。</li>
+                            <li>参与 <span class="data-hl">20+ 小时</span> 专项培训及周度磨课质检，保障标准化管控。</li>
+                        </ul>
+                    </div>
+
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2024.10 - 2024.12</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 实习</span>
+                        </div>
+                        <div class="exp-company">上海译国译民翻译有限公司</div>
+                        <div class="exp-role"> 本地化翻译</div>
+                        <ul class="exp-highlights">
+                            <li>完成 <span class="data-hl">48+ 小时</span> 系统性翻译实训，精通CAT操作。</li>
+                            <li>主导项目全流程，高质量交付超 <span class="data-hl">8,000 字</span> 商务文档。</li>
+                            <li>参与交叉校验，推动术语库一致性大幅提升。</li>
+                        </ul>
+                    </div>
+
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2023 - 至今</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 自由履历</span>
+                        </div>
+                        <div class="exp-company">新媒体视觉与排版运营</div>
+                        <div class="exp-role"> 独立采编与排版</div>
+                        <ul class="exp-highlights">
+                            <li>熟练使用 PS/AI/Canva，独立完成微信推文、商业海报编辑。</li>
+                            <li>精准对齐品牌风格调性，产出图文视觉内容 <span class="data-hl">50+ 篇</span>。</li>
+                            <li>独立运营个人账号，全网账号粉丝5000+，爆款视频获赞 <span class="data-hl">6.5w+</span>。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="project" class="tab-content">
+                <div class="sticky-stack-container">
+                     <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2025.11</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 国际展会</span>
+                        </div>
+                        <div class="exp-company">第 32 届中国农业高新科技成果博览会(CAF)</div>
+                        <div class="exp-role"> 陪同口译</div>
+                        <ul class="exp-highlights">
+                            <li>为<span class="data-hl">联合国可持续农机中心官员、伊朗伊斯兰和共和国农业部副部长</span>提供全程陪同翻译，保障专业沟通顺畅，推动展会国际合作对接落地。</li>
+                        </ul>
+                    </div>
+                     <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2025.5 - 至今</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 敏捷开发</span>
+                        </div>
+                        <div class="exp-company">智绘千面-AI学习资源整合系统</div>
+                        <div class="exp-role"> 第一负责人</div>
+                        <ul class="exp-highlights">
+                            <li>针对校园数据孤岛与个性化路径缺失痛点，设计并主导开发AI教育综合合辅助系统，凭借创新架构与商业潜力斩获<span class="data-hl">国家级大创项目立项</span>。</li>
+                            <li>运用SQL与AI大模型预处理多渠道教育数据;使用VS Code、HTML、CSS独立完成前端交互网页(MVP产品原型)的搭建与测试。</li>
+                            <li>产品demo：<a href="https://lrz.xisuqfwxs.top/" target="_blank" style="color: var(--accent-color); font-weight: 700; text-decoration: underline; cursor: pointer;">https://lrz.xisuqfwxs.top/</a></li>
+                            </ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2025.11</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 重大项目</span>
+                        </div>
+                        <div class="exp-company">2026陕西省外国专家迎新春晚会</div>
+                        <div class="exp-role"> 全流程陪同口译</div>
+                        <ul class="exp-highlights">
+                            <li>为高校及相关单位外籍专家提供全流程陪同口译保障。</li>
+                            <li>在复杂的高规格国际场合中，保障跨文化交流无缝顺畅落地。</li>
+                        </ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                       <div class="exp-top">
+                            <span class="exp-badge">2024.10 - 2024.11</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 实地调研</span>
+                        </div>
+                        <div class="exp-company">首届中国翻译与传播研讨会</div>
+                        <div class="exp-role"> 调研项目运营</div>
+                        <ul class="exp-highlights">
+                            <li>走访整理调研实录超 <span class="data-hl">20,000+</span> 字高质量原始素材。</li>
+                            <li>作为核心成员支撑团队完成 <span class="data-hl">10余篇</span> 主题传播稿件创作。</li>
+                        </ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2025.04 - 2025.05</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 国际展会</span>
+                        </div>
+                        <div class="exp-company">第九届丝绸之路国际博览会</div>
+                        <div class="exp-role"> 陪同口译</div>
+                        <ul class="exp-highlights">
+                            <li>对接<span class="data-hl"> 10 + </span>国际参展商及嘉宾的会务协调需求，提供<span class="data-hl"> 8 + </span>小时现场翻译及引导服务，保障跨语言沟通及展会环节衔接顺畅</li>
+                        </ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top">
+                            <span class="exp-badge">2025.04 - 至今</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">📍 项目推进</span>
+                        </div>
+                        <div class="exp-company">智融跨文化：AI赋能大学英语跨文化教学创新</div>
+                        <div class="exp-role"> 核心负责人</div>
+                        <ul class="exp-highlights">
+                            <li>针对大学英语跨文化教学中理论与实践脱节、技术应用浅层化等痛点，主导设计融合对分课堂与AI的“文化-技术-能力”三位一体教学模式，构建覆盖30+国家文化场景的智能案例库，以创新理论架构<span class="data-hl">获得国家级大创项目立项</span>。</li>
+                            <li>独立开发基于自然语言处理的跨文化行为追踪算法与个性化学习反馈机制，运用多源数据（课堂观察、深度访谈、文本分析）完成教学原型页面搭建与实证编码，推动模式落地转化。</li>
+                        </ul>
+                    </div>    
+                </div>
+            </div>
+
+            <div id="campus" class="tab-content">
+                <div class="sticky-stack-container">
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2025.09 - 至今</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园</span></div>
+                        <div class="exp-company">西安外国语大学</div>
+                        <div class="exp-role"> 代理班主任</div>
+                        <ul class="exp-highlights">
+                            <li>统筹管理 <span class="data-hl">300+</span> 新生入学注册、学籍档案及日常活动。</li>
+                            <li>工作效率同任职同学中排名 <span class="data-hl">第一</span>。</li>
+                        </ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2023.09 - 2025.07</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园</span></div>
+                        <div class="exp-company">高级翻译学院主持人队</div>
+                        <div class="exp-role"> 队长</div>
+                        <ul class="exp-highlights">
+                            <li>累计主持省、校级大型活动 <span class="data-hl">20+ 场</span>，把控全局。</li>
+                            <li>统筹队务，衔接 <span class="data-hl">新人带教</span>，保障主持工作落地。</li>
+                        </ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2023.09 - 至今</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园</span></div>
+                        <div class="exp-company">高级翻译学院</div>
+                        <div class="exp-role"> 学习委员</div>
+                        <ul class="exp-highlights">
+                            <li>协助教师管理日常课堂事务，累计反馈 <span class="data-hl">30+ 条</span> 共性问题。</li>
+                        </ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2023 - 2024</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园赛事</span></div>
+                        <div class="exp-company">校辩论队 / 高翻中辩队</div>
+                        <div class="exp-role"> 技术指导 / 核心队员</div>
+                        <ul class="exp-highlights">
+                            <li>主导日常辩技训练，个人蝉联最佳辩手并斩获 <span class="data-hl">第十三届“继学杯”冠军</span>。</li>
+                        </ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2023 - 2024</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园组织</span></div>
+                        <div class="exp-company">博译青马研习社</div>
+                        <div class="exp-role"> 社长</div>
+                        <ul class="exp-highlights">
+                            <li>全面统筹社团运转，策划组织活动累计覆盖 <span class="data-hl">1000+</span> 人次。</li>
+                        </ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2024.10 - 2025.10</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园媒体</span></div>
+                        <div class="exp-company">融媒体中心采编部</div>
+                        <div class="exp-role"> 记者</div>
+                        <ul class="exp-highlights"><li>负责人物采访及稿件撰写发布，浏览量破万，保障官方传播。</li></ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2024.09 - 至今</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园媒体</span></div>
+                        <div class="exp-company">西安外国语大学广播台</div>
+                        <div class="exp-role">部长 / 新闻部主播</div>
+                        <ul class="exp-highlights"><li>严格把控融媒体内容质量与导向，审核发布推送<span class="data-hl">200 + 篇</span>，负责新闻直播全流程。</li></ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2024.10 - 2025.07</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园组织</span></div>
+                        <div class="exp-company">校友会视觉编辑中心</div>
+                        <div class="exp-role"> 干事</div>
+                        <ul class="exp-highlights"><li>负责2部主题纪录片摄制，强化校友与学校的情感互动连接。</li></ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2025.02 - 至今</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园组织</span></div>
+                        <div class="exp-company">校翻译理论研习社</div>
+                        <div class="exp-role"> 学术部部长</div>
+                        <ul class="exp-highlights"><li>协调翻译学习资源，组织十余场讲座，覆盖语言专业超千人。</li></ul>
+                    </div>
+                    <div class="exp-card sticky-card">
+                        <div class="exp-top"><span class="exp-badge">2023 - 2024</span><span style="font-size: 0.8rem; color: var(--text-muted);">📍 校园赛事</span></div>
+                        <div class="exp-company">模拟亚太经合组织 (MODEL APEC)</div>
+                        <div class="exp-role"> 核心代表</div>
+                        <ul class="exp-highlights"><li>起草全英文提案文件，深度参与议程并斩获地区赛 <span class="data-hl">一等奖</span>。</li></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="journey">
+        <div class="container reveal">
+            <h2 class="section-title">Professional <span>Trajectory</span></h2>
+            <div style="text-align: center; color: var(--text-muted); margin-bottom: 40px; font-size: 0.95rem;">
+                从西北内陆到沿海前沿，不断探索未知，拓展能力边界。
+            </div>
+            
+            <div class="map-container">
+                <svg viewBox="0 0 700 400" style="width: 100%; height: 100%; max-width: 800px; overflow: visible;">
+                    <path d="M 100 80 C 200 80, 200 180, 300 180 C 450 180, 450 220, 600 220 C 650 320, 550 350, 500 350" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="4" stroke-linecap="round" />
+                    <path d="M 100 80 C 200 80, 200 180, 300 180 C 450 180, 450 220, 600 220 C 650 320, 550 350, 500 350" fill="none" stroke="#14b8a6" stroke-width="4" stroke-linecap="round" class="path-animated opacity-70" />
+                    
+                    <g class="city-node" transform="translate(100, 80)">
+                        <circle cx="0" cy="0" r="15" fill="rgba(20,184,166,0.1)" style="animation: pulse 2s infinite;" />
+                        <circle cx="0" cy="0" r="6" fill="#020617" stroke="#14b8a6" stroke-width="3" style="transition: transform 0.3s;" />
+                        <text x="0" y="-20" fill="#fff" font-size="14" font-weight="bold" text-anchor="middle">延安</text>
+                        <g class="city-info">
+                            <rect x="-60" y="15" width="120" height="30" rx="6" fill="rgba(15,23,42,0.9)" stroke="rgba(20,184,166,0.5)" />
+                            <text x="0" y="34" fill="#cbd5e1" font-size="11" text-anchor="middle">社会实践溯源</text>
+                        </g>
+                    </g>
+                    
+                    <g class="city-node" transform="translate(300, 180)">
+                        <circle cx="0" cy="0" r="15" fill="rgba(20,184,166,0.1)" style="animation: pulse 2s infinite 0.5s;" />
+                        <circle cx="0" cy="0" r="6" fill="#020617" stroke="#14b8a6" stroke-width="3" style="transition: transform 0.3s;" />
+                        <text x="0" y="-20" fill="#fff" font-size="14" font-weight="bold" text-anchor="middle">西安</text>
+                        <g class="city-info">
+                            <rect x="-85" y="15" width="170" height="30" rx="6" fill="rgba(15,23,42,0.9)" stroke="rgba(20,184,166,0.5)" />
+                            <text x="0" y="34" fill="#cbd5e1" font-size="11" text-anchor="middle">西外 / 字节跳动 / 丝博会</text>
+                        </g>
+                    </g>
+
+                    <g class="city-node" transform="translate(600, 220)">
+                        <circle cx="0" cy="0" r="15" fill="rgba(20,184,166,0.1)" style="animation: pulse 2s infinite 1s;" />
+                        <circle cx="0" cy="0" r="6" fill="#020617" stroke="#14b8a6" stroke-width="3" style="transition: transform 0.3s;" />
+                        <text x="0" y="-20" fill="#fff" font-size="14" font-weight="bold" text-anchor="middle">上海</text>
+                        <g class="city-info">
+                            <rect x="-75" y="15" width="150" height="30" rx="6" fill="rgba(15,23,42,0.9)" stroke="rgba(20,184,166,0.5)" />
+                            <text x="0" y="34" fill="#cbd5e1" font-size="11" text-anchor="middle">新东方讲师 / 国际实训</text>
+                        </g>
+                    </g>
+
+                    <g class="city-node" transform="translate(500, 350)">
+                        <circle cx="0" cy="0" r="15" fill="rgba(20,184,166,0.1)" style="animation: pulse 2s infinite 1.5s;" />
+                        <circle cx="0" cy="0" r="6" fill="#020617" stroke="#14b8a6" stroke-width="3" style="transition: transform 0.3s;" />
+                        <text x="0" y="-20" fill="#fff" font-size="14" font-weight="bold" text-anchor="middle">广州</text>
+                        <g class="city-info">
+                            <rect x="-70" y="15" width="140" height="30" rx="6" fill="rgba(15,23,42,0.9)" stroke="rgba(20,184,166,0.5)" />
+                            <text x="0" y="34" fill="#cbd5e1" font-size="11" text-anchor="middle">超级辩手赛事统筹</text>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <section id="honors" style="border-bottom: none;">
+        <div class="container reveal">
+            <h2 class="section-title">Honors & <span>Vibe</span></h2>
+            
+            <div style="margin-bottom: 30px; font-size: 1.5rem; font-weight: 900; color: #fff;"> Honors</div>
+            <div class="honors-flex">
+                <span class="honor-badge"> 全国大学生创业创新项目 <span>国家级立项</span> (2次)</span>
+                <span class="honor-badge"> 中研杯全国大学生英语能力 国家级一等奖</span>
+                <span class="honor-badge"> 16th 全国 MODEL APEC 地区赛一等</span>
+                <span class="honor-badge"> 外研社全国大学生英语辩论大赛 一等奖</span>
+                <span class="honor-badge"> 全国大学生英语翻译大赛 省级一等奖</span>
+                <span class="honor-badge"> 第十三届“继学杯”冠军 / 蝉联最佳辩手</span>
+                <span class="honor-badge"> 2025 西安外国语大学 二等奖学金</span>
+                <span class="honor-badge"> 2024 西安外国语大学 三等奖学金</span>
+                <span class="honor-badge"> 中国外文局亚太传播中心 优秀实习生</span>
+            </div>
+
+            <div style="margin-bottom: 30px; font-size: 1.5rem; font-weight: 900; color: #fff; margin-top: 80px; display: flex; align-items: center; gap: 10px;">
+                 Vibe
+            </div>
+            
+            <div class="hobbies-grid reveal delay-1">
+                <div class="hobby-card">
+                    <div class="hobby-front"><span class="hobby-icon">🗣️</span><h3 class="hobby-title">辩论逻辑</h3></div>
+                    <div class="hobby-back"><div class="back-title">职场赋能</div><p class="back-desc">在复杂业务与海量信息中快速抽丝剥茧，构建强硬的逻辑闭环与说服力。</p></div>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-front"><span class="hobby-icon">🎙️</span><h3 class="hobby-title">活动主持</h3></div>
+                    <div class="hobby-back"><div class="back-title">职场赋能</div><p class="back-desc">面对突发状况临危不乱，具备极强的大型项目跨部门沟通与全局控场力。</p></div>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-front"><span class="hobby-icon">📷</span><h3 class="hobby-title">视觉排版</h3></div>
+                    <div class="hobby-back"><div class="back-title">职场赋能</div><p class="back-desc">熟练运用PS/AI/Canva，对物料具备敏锐审美，精准把控品牌高级调性。</p></div>
+                </div>
+                
+                <div class="music-long-card">
+                    <div class="music-bg-glow"></div>
+                    <div class="vinyl-record">
+                        <span style="font-size: 20px;">🎶</span>
+                    </div>
+                    <div class="music-info">
+                        <h4>Western Pop </h4>
+                        <p>欧美流行乐狂热粉，<span>Ariana Grande</span> 资深乐迷。无论工作还是学习，始终保持如同听新歌般的探索欲与无限活力。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Griffin (李睿泽). All rights reserved. | 无限进步。</p>
+        </div>
+    </footer>
+
+    <div id="chat-widget">
+        <button id="chat-toggle" onclick="toggleChat()">
+            <svg viewBox="0 0 24 24"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z"/></svg>
+            唤醒 AI 分身
+        </button>
+        
+        <div id="chat-window">
+            <div class="chat-header">
+                <div class="chat-title"><div class="dot"></div> Griffin's AI 助理</div>
+                <button class="chat-close" onclick="toggleChat()">
+                    <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6L18 18"/></svg>
+                </button>
+            </div>
+            <div class="chat-body" id="chat-body">
+                <div class="msg bot">你好！我是 Griffin 的全息数字助理 ✨。你想了解他的哪些方面？</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="问问关于 Griffin 的事..." onkeypress="handleKey(event)">
+                <button onclick="sendMessage()" id="chat-send-btn">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2Z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. 雷达图生成逻辑 (SVG Mathematics) ---
+        const skillsData = [
+            { id: 'lang', name: '语言跨文化', value: 95 },
+            { id: 'tech', name: '新质技术', value: 85 },
+            { id: 'hr', name: '敏捷执行', value: 95 },
+            { id: 'logic', name: '逻辑思辨', value: 90 },
+            { id: 'media', name: '媒体策划', value: 85 }
+        ];
+
+        function drawRadarChart() {
+            const svgContainer = document.getElementById('radar-chart');
+            const size = 300, center = size / 2, radius = size * 0.35, angleStep = (Math.PI * 2) / skillsData.length;
+            const getCoords = (val, i) => ({ x: center + (val / 100) * radius * Math.cos(i * angleStep - Math.PI / 2), y: center + (val / 100) * radius * Math.sin(i * angleStep - Math.PI / 2) });
+            
+            let svgHTML = `<svg width="100%" height="100%" viewBox="0 0 ${size} ${size}" style="overflow:visible">`;
+            
+            // 背景网格
+            [0.2, 0.4, 0.6, 0.8, 1].forEach(scale => {
+                let pts = skillsData.map((_, i) => `${getCoords(100 * scale, i).x},${getCoords(100 * scale, i).y}`).join(' ');
+                svgHTML += `<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
+            });
+            
+            // 数据区多边形
+            let dataPts = skillsData.map((d, i) => `${getCoords(d.value, i).x},${getCoords(d.value, i).y}`).join(' ');
+            svgHTML += `<polygon points="${dataPts}" fill="rgba(20, 184, 166, 0.2)" stroke="#14b8a6" stroke-width="2" style="filter: drop-shadow(0 0 10px rgba(20,184,166,0.3)); transition: all 0.5s;"/>`;
+            
+            // 节点和文字
+            skillsData.forEach((d, i) => {
+                let p = getCoords(d.value, i);
+                let labelP = getCoords(128, i);
+                svgHTML += `<text x="${labelP.x}" y="${labelP.y}" fill="#94a3b8" font-size="12" text-anchor="middle" alignment-baseline="middle" font-weight="bold" class="radar-label" data-id="${d.id}">${d.name}</text>`;
+                svgHTML += `<circle cx="${p.x}" cy="${p.y}" r="5" fill="#020617" stroke="#14b8a6" stroke-width="2" class="radar-node" data-id="${d.id}" style="transition: 0.3s; transform-origin: ${p.x}px ${p.y}px;" />`;
+            });
+            
+            svgHTML += `</svg>`;
+            svgContainer.innerHTML = svgHTML;
+        }
+
+        drawRadarChart();
+
+        // 绑定雷达技能列表交互
+        document.querySelectorAll('.r-skill-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                document.querySelectorAll('.r-skill-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                let sid = item.getAttribute('data-skill');
+                
+                // SVG节点高亮
+                document.querySelectorAll('.radar-node').forEach(n => {
+                    n.style.transform = n.getAttribute('data-id') === sid ? 'scale(1.8)' : 'scale(1)';
+                    n.setAttribute('stroke', n.getAttribute('data-id') === sid ? '#fff' : '#14b8a6');
+                });
+                document.querySelectorAll('.radar-label').forEach(l => {
+                    l.setAttribute('fill', l.getAttribute('data-id') === sid ? '#14b8a6' : '#94a3b8');
+                });
+            });
+        });
+
+        // --- 2. 打字机与全局特效 ---
+        const roles = ["跨界 HR 实习生", "雅思课堂讲师", "专业国际传播编译", "敏捷前端开发者", "青年逻辑辩手", "六边形战士"];
+        let roleIdx = 0, charIdx = 0, isDel = false;
+        function typeWriter() {
+            const el = document.getElementById("typewriter");
+            if(isDel) { el.textContent = roles[roleIdx].substring(0, charIdx-1); charIdx--; } 
+            else { el.textContent = roles[roleIdx].substring(0, charIdx+1); charIdx++; }
+            let spd = isDel ? 40 : 100;
+            if(!isDel && charIdx === roles[roleIdx].length) { spd = 2000; isDel = true; } 
+            else if(isDel && charIdx === 0) { isDel = false; roleIdx = (roleIdx+1)%roles.length; spd = 500; }
+            setTimeout(typeWriter, spd);
+        }
+        window.onload = () => { typeWriter(); document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('active')); };
+
+        // 导航与光标
+        const cursorGlow = document.getElementById('cursor-glow');
+        window.addEventListener('mousemove', (e) => {
+            if(cursorGlow) { cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px'; }
+        });
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById("progress-bar").style.width = ((window.scrollY / h) * 100) + "%";
+            if (window.scrollY > 50) document.getElementById('navbar').classList.add('scrolled');
+            else document.getElementById('navbar').classList.remove('scrolled');
+            
+            const btn = document.getElementById('floating-download');
+            if (window.scrollY > 600) btn.classList.add('visible'); else btn.classList.remove('visible');
+        });
+
+        const obs = new IntersectionObserver(e => { e.forEach(ent => { if(ent.isIntersecting) { ent.target.classList.add('active'); obs.unobserve(ent.target); } }); }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // --- 3. 星空粒子背景 ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particlesArray = [];
+        const mouse = { x: null, y: null, radius: 150 };
+        window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('mouseout', () => { mouse.x = undefined; mouse.y = undefined; });
+        window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; initParticles(); });
+
+        class Particle {
+            constructor(x, y, dx, dy, size) { this.x = x; this.y = y; this.dx = dx; this.dy = dy; this.size = size; }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2, false); ctx.fillStyle='#14b8a6'; ctx.fill(); }
+            update() {
+                if(this.x > canvas.width || this.x < 0) this.dx = -this.dx;
+                if(this.y > canvas.height || this.y < 0) this.dy = -this.dy;
+                let distX = mouse.x - this.x, distY = mouse.y - this.y;
+                if(mouse.x != null && Math.sqrt(distX*distX + distY*distY) < mouse.radius + this.size) {
+                    if(mouse.x < this.x && this.x < canvas.width - this.size*10) this.x += 1;
+                    if(mouse.x > this.x && this.x > this.size*10) this.x -= 1;
+                    if(mouse.y < this.y && this.y < canvas.height - this.size*10) this.y += 1;
+                    if(mouse.y > this.y && this.y > this.size*10) this.y -= 1;
+                }
+                this.x += this.dx; this.y += this.dy; this.draw();
+            }
+        }
+        function initParticles() {
+            particlesArray = []; let amt = (canvas.height*canvas.width)/9000;
+            for(let i=0; i<amt; i++) {
+                let sz = (Math.random()*2)+1, x = Math.random()*(innerWidth-sz*2)+sz*2, y = Math.random()*(innerHeight-sz*2)+sz*2;
+                particlesArray.push(new Particle(x, y, (Math.random()*0.4)-0.2, (Math.random()*0.4)-0.2, sz));
+            }
+        }
+        function animateParticles() {
+            requestAnimationFrame(animateParticles); ctx.clearRect(0,0,innerWidth,innerHeight);
+            particlesArray.forEach(p => p.update());
+            for(let a=0; a<particlesArray.length; a++){
+                for(let b=a; b<particlesArray.length; b++){
+                    let dist = Math.pow(particlesArray[a].x-particlesArray[b].x,2) + Math.pow(particlesArray[a].y-particlesArray[b].y,2);
+                    if(dist < (canvas.width/7)*(canvas.height/7)){
+                        ctx.strokeStyle = `rgba(20, 184, 166, ${(1 - dist/20000) * 0.25})`;
+                        ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke();
+                    }
+                }
+            }
+        }
+        initParticles(); animateParticles();
+
+        // --- 4. AI 助理逻辑 (Gemini API) ---
+        const apiKey = "AIzaSyDlhJOZluH7pBgOB4Op6OXxOG1FNi1i0X0"; // <--- 请在这里填入你的 Gemini API Key
+
+        let chatOpen = false;
+        let isChatLoading = false;
+        let chatHistory = [];
+
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            document.getElementById('chat-window').style.display = chatOpen ? 'block' : 'none';
+            document.getElementById('chat-toggle').style.display = chatOpen ? 'none' : 'flex';
+        }
+
+        function handleKey(e) { if(e.key === 'Enter') sendMessage(); }
+
+        async function sendMessage() {
+            const inputEl = document.getElementById('chat-input');
+            const text = inputEl.value.trim();
+            if(!text || isChatLoading) return;
+            
+            inputEl.value = '';
+            appendMsg(text, 'user');
+            
+            if(!apiKey) {
+                setTimeout(() => appendMsg("⚠️ 请在代码底部配置 Gemini API 密钥以激活全息数字对话功能。", 'bot'), 500);
+                return;
+            }
+
+            isChatLoading = true;
+            appendMsg("正在与主脑链接...", 'loading');
+            
+            chatHistory.push({ role: "user", parts: [{ text }] });
+
+            const sysPrompt = "你现在是李睿泽(Griffin)的个人网站全息AI助理。回答应专业、自信、简短有力。核心经历: 字节跳动HR、外文局翻译、新东方讲师。利用分点和Emoji。";
+            
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: chatHistory, systemInstruction: { parts: [{ text: sysPrompt }] } })
+                });
+                const data = await res.json();
+                
+                // 移除 loading
+                document.getElementById('chat-body').lastChild.remove();
+                
+                let botReply = data.candidates?.[0]?.content?.parts?.[0]?.text || '通讯受到星云干扰，请稍后再试 ✨';
+                appendMsg(botReply, 'bot');
+                chatHistory.push({ role: "model", parts: [{ text: botReply }] });
+            } catch (err) {
+                document.getElementById('chat-body').lastChild.remove();
+                appendMsg('网络连接异常或接口受限，请稍后重试。', 'bot');
+            }
+            isChatLoading = false;
+        }
+
+        function appendMsg(txt, type) {
+            const body = document.getElementById('chat-body');
+            const d = document.createElement('div');
+            d.className = `msg ${type}`;
+            d.innerText = txt;
+            body.appendChild(d);
+            body.scrollTop = body.scrollHeight;
+        }
+    </script>
+
+<script>
+    // 下载同目录下的所有 PDF 文件
+    function downloadAll() {
+        const files = [
+            'Griffin_Li_Resume.pdf',
+            '李睿泽（Griffin）中文简历.pdf'
+        ];
+        files.forEach(filename => {
+            const a = document.createElement('a');
+            a.href = encodeURI(filename);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. 光标跟随与反色
+    const cursor = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', (e) => {
+        requestAnimationFrame(() => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+    });
+
+    // 2. 磁吸交互 (Magnetic Effect) 作用于按钮和导航链接
+    const magneticElements = document.querySelectorAll('.nav-links a, .btn, .tab-btn, .honor-badge');
+    
+    magneticElements.forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+            // 计算鼠标相对元素中心的距离
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            // 磁力吸附：按钮朝鼠标方向微调
+            el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) scale(1.05)`;
+            cursor.classList.add('magnetic-active');
+        });
+        
+        el.addEventListener('mouseleave', () => {
+            // 物理回弹复位
+            el.style.transform = `translate(0px, 0px) scale(1)`;
+            cursor.classList.remove('magnetic-active');
+        });
+    });
+
+    // 3. 滚动视差与层叠效果
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        
+        // 极光背景视差位移 (Parallax)
+        const blob1 = document.querySelector('.blob-1');
+        const blob2 = document.querySelector('.blob-2');
+        if (blob1 && blob2) {
+            blob1.style.transform = `translateY(${scrollY * 0.15}px)`;
+            blob2.style.transform = `translateY(${scrollY * 0.08}px)`;
+        }
+
+        // 履历卡片层叠吸顶 (Sticky Stacking)
+        const cards = document.querySelectorAll('.sticky-card');
+        cards.forEach((card, index) => {
+            const rect = card.getBoundingClientRect();
+            
+            // 阈值：当卡片触及吸顶位置 (130px) 时触发压缩
+            if (rect.top <= 130) {
+                const scrollPast = 130 - rect.top;
+                const scaleDown = Math.max(0.85, 1 - scrollPast * 0.001); // 缩放到 85% 停止
+                const opacityDown = Math.max(0.4, 1 - scrollPast * 0.002); // 变暗到 40% 停止
+                
+                card.style.transform = `scale(${scaleDown})`;
+                card.style.opacity = opacityDown;
+                card.style.filter = `blur(${scrollPast * 0.02}px)`; // 加入轻微失焦
+            } else {
+                // 未吸顶时恢复正常
+                card.style.transform = `scale(1)`;
+                card.style.opacity = 1;
+                card.style.filter = `blur(0px)`;
+            }
+        });
+    });
+});
+
+// 显示联系方式弹窗
+function showContactInfo() {
+    const modal = document.getElementById('contactModal');
+    modal.classList.add('active');
+}
+
+// 关闭联系方式弹窗
+function closeContactInfo() {
+    const modal = document.getElementById('contactModal');
+    modal.classList.remove('active');
+}
+
+// 可选优化：点击弹窗外部（遮罩层）时也可以关闭弹窗
+document.getElementById('contactModal').addEventListener('click', function(e) {
+    if (e.target === this) { // 确保点击的是遮罩层而不是里面的内容框
+        closeContactInfo();
+    }
+});
+</script>
+</body>
+</html>
