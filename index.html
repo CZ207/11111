@@ -1233,262 +1233,123 @@
         .resume-item ul li strong { color: var(--text-primary); font-weight: 500; }
 
         /* ── 响应式 ── */
-        /* ════════════════════════════════════════════
-           RESPONSIVE — 900px 平板/小屏
-        ════════════════════════════════════════════ */
         @media (max-width: 900px) {
-            /* 导航 */
-            .top-nav { padding: 12px 20px; }
-            .nav-links { display: none; }
-            .nav-cta { display: none; }
-            .hamburger { display: flex; }
-            .chapter-progress { display: none; }
-
-            /* Hero */
-            .hero-section { padding: 70px 20px 40px; }
-            .hero-split { flex-direction: column; gap: 28px; align-items: center; }
-            .hero-left { text-align: center; }
-            .hero-english-name { font-size: 3.4rem; }
-            .hero-chinese-name { font-size: 1.5rem; }
-            .hero-right { flex: 0 0 240px; height: 240px; }
-
-            /* 通用 section */
-            .section { padding: 72px 20px 56px; }
-            .section-header { margin-bottom: 44px; }
-            .section-header h2 { font-size: 2rem; }
-
-            /* 侧写 */
-            .about-grid { grid-template-columns: 1fr; gap: 32px; }
-
-            /* 本色沉浸式 */
-            .immersive-scene { height: 400vh; }
-            .imm-index { display: none; }
-            .imm-progress { display: none; }
-            .imm-panel { padding: 32px 20px 60px; }
-            .imm-panel-inner { grid-template-columns: 1fr; gap: 28px; }
-            .imm-big-title { font-size: 2rem; }
-            .imm-motto { font-size: 0.95rem; }
-            .imm-tags { gap: 7px; }
-
-            /* 章法对话 */
-            .interview-content { grid-template-columns: 1fr; gap: 24px; min-height: auto; }
-            .interview-q-side { position: static; }
-            .interview-question { font-size: 1.35rem; min-height: auto; margin-bottom: 8px; }
-            .interview-stage { min-height: auto; }
-            .interview-controls { flex-wrap: wrap; gap: 12px; }
-
-            /* 践行标签 */
-            .hm-panel.active { grid-template-columns: 1fr; gap: 24px; }
-            .hm-panel-keyword { font-size: 1.8rem; }
-            .hm-tab { padding: 10px 18px; font-size: 0.82rem; }
-
-            /* 来路时间线 */
-            .timeline-center-line, .timeline-glow-line { left: 16px; }
-            .timeline-node { flex-direction: column; padding-left: 44px; margin-bottom: 40px; }
-            .timeline-content { width: 100%; order: 3; }
-            .timeline-dot { position: absolute; left: 8px; margin-top: 8px; order: 1; }
-            .timeline-label { width: 100%; text-align: left !important; order: 2; margin-bottom: 8px; }
-            .timeline-node.right-side .timeline-content { order: 3; }
-            .timeline-node.right-side .timeline-dot { order: 1; }
-            .timeline-node.right-side .timeline-label { order: 2; }
-
-            /* EQ 光谱 */
-            .eq-track { grid-template-columns: 100px 1fr; gap: 14px; padding: 14px 16px; }
-            .eq-detail { display: none; }
-
-            /* 荣誉 */
-            .honor-badge { font-size: 0.78rem; padding: 9px 16px; }
-
-            /* 履历 */
-            .resume-tabs { gap: 6px; flex-wrap: wrap; }
-            .resume-tab { font-size: 0.78rem; padding: 7px 14px; }
+            .about-grid, .method-grid { grid-template-columns: 1fr; }
+            .experience-cards, .ability-cluster-grid { grid-template-columns: 1fr 1fr; }
             .resume-item-list { grid-template-columns: 1fr; }
             .resume-item:nth-child(n) { transform: none; }
+            .interests-mosaic .im-row { flex-direction: column; }
+            .im-card { min-height: 180px; }
+            .hero-english-name { font-size: 3.2rem; }
+            .hero-split { flex-direction: column; gap: 28px; }
+            .hero-right { flex: 0 0 auto; width: min(260px, 72vw); height: min(260px, 72vw); }
+            .chapter-progress { display: none; }
+            .section-header h2 { font-size: 2rem; }
+            .resume-tabs { gap: 8px; }
             .resume-item-header { flex-direction: column; gap: 4px; }
+            .timeline-center-line, .timeline-glow-line { left: 20px; }
+            .timeline-node { flex-direction: column; padding-left: 48px; }
+            .timeline-content { width: 100%; margin-bottom: 10px; }
+            .timeline-label { width: 100%; text-align: left !important; margin-bottom: 6px; }
+            .timeline-dot { position: absolute; left: 10px; margin-top: 10px; }
+            .imm-panel-inner { grid-template-columns: 1fr; gap: 32px; }
+            .imm-big-title { font-size: 2rem; }
+            .imm-panel { padding: 40px 28px; }
+            .imm-index { display: none; }
+            .imm-progress { display: none; }
+        }
+        @media (max-width: 600px) {
+            .experience-cards, .ability-cluster-grid { grid-template-columns: 1fr; }
+            .resume-item-list { grid-template-columns: 1fr; }
+            .interests-mosaic .im-row { flex-direction: column; }
+            .im-card { min-height: 160px; flex: none; width: 100%; }
+            .honors-badge-flex { gap: 8px; }
+            .honor-badge { font-size: 0.75rem; padding: 9px 16px; }
+        }
+        /* ════════════════════════════════════════════════
+           v8 增补 · 交互与动效增强（仅新增，不改动既有规则）
+        ════════════════════════════════════════════════ */
 
-            /* 兴趣 */
-            .im-row { flex-direction: column; }
-            .im-card { min-height: 170px; flex: none; width: 100%; }
+        /* B. Hero 聚光灯（指针跟随，触屏不显示） */
+        .hero-spotlight {
+            position: absolute; inset: 0; z-index: 1; pointer-events: none;
+            background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 40%),
+                        rgba(212,121,90,0.12), transparent 60%);
+            opacity: 0; transition: opacity 0.6s ease;
+            mix-blend-mode: screen;
+        }
+        @media (hover: hover) {
+            .hero-section:hover .hero-spotlight { opacity: 1; }
+        }
+        .hero-griffin-container { position: relative; z-index: 2; }
 
-            /* 来信 */
-            .outro-section { padding: 48px 20px; }
-            .closing-quote { font-size: 1.8rem; }
-            .contact-row { flex-direction: column; align-items: center; gap: 10px; }
+        /* One2X 经历卡 · 可点击链接 chip */
+        a.hm-tag { text-decoration: none; cursor: pointer;
+            transition: background 0.4s var(--ease-soft), border-color 0.4s var(--ease-soft),
+                        color 0.4s var(--ease-soft), transform 0.4s var(--ease-soft), box-shadow 0.4s; }
+        a.hm-tag:hover {
+            background: rgba(200,110,85,0.14); border-color: var(--accent-rose);
+            color: var(--text-primary); transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(200,110,85,0.18);
         }
 
-        /* ════════════════════════════════════════════
-           RESPONSIVE — 480px 手机专属
-        ════════════════════════════════════════════ */
-        @media (max-width: 480px) {
-            /* 导航 */
-            .top-nav { padding: 10px 16px; }
-            .nav-brand { font-size: 0.88rem; }
+        /* F. 能力条入场填充过渡 */
+        .eq-bar-fill { transition: width 1.4s var(--ease-out-expo), filter 0.4s, box-shadow 0.4s; }
 
-            /* 汉堡菜单展开时 */
-            .mobile-menu { padding: 16px; }
-            .mobile-menu a { font-size: 1.1rem; padding: 14px 0; }
+        /* 画布随本色三屏轻微变色 */
+        #infinity-canvas { transition: opacity 1.2s ease, filter 1.4s ease; }
 
-            /* Hero */
-            .hero-section { padding: 64px 16px 36px; min-height: 100svh; }
-            .hero-english-name { font-size: 2.6rem; letter-spacing: 0.06em; }
-            .hero-chinese-name { font-size: 1.3rem; }
-            .hero-hint { font-size: 0.72rem; }
-            .hero-right { flex: 0 0 200px; height: 200px; }
-            .hero-quick-capsules { gap: 8px; margin-top: 20px; }
-            .hero-quick-capsules .capsule { font-size: 0.7rem; padding: 5px 13px; }
-            .hero-enter-btn { font-size: 0.82rem; padding: 12px 28px; margin-top: 24px; }
+        @media (prefers-reduced-motion: no-preference) {
+            /* A. Hero 名字逐字"书写"入场 */
+            .hero-english-name.write .hero-letter {
+                animation: heroWrite 0.6s var(--ease-out-expo) both;
+            }
+            .hero-english-name.write .hero-letter:nth-child(1){ animation-delay: 0.05s; }
+            .hero-english-name.write .hero-letter:nth-child(2){ animation-delay: 0.17s; }
+            .hero-english-name.write .hero-letter:nth-child(3){ animation-delay: 0.29s; }
+            .hero-english-name.write .hero-letter:nth-child(4){ animation-delay: 0.41s; }
+            .hero-english-name.write .hero-letter:nth-child(5){ animation-delay: 0.53s; }
+            .hero-english-name.write .hero-letter:nth-child(6){ animation-delay: 0.65s; }
+            .hero-english-name.write .hero-letter:nth-child(7){ animation-delay: 0.77s; }
+            @keyframes heroWrite {
+                0%   { opacity: 0; clip-path: inset(0 100% 0 0); filter: blur(4px); transform: translateY(0.12em); }
+                55%  { opacity: 1; filter: blur(0); }
+                100% { opacity: 1; clip-path: inset(0 0 0 0); filter: blur(0); transform: translateY(0); }
+            }
 
-            /* 通用 section */
-            .section { padding: 56px 16px 44px; }
-            .section-header { margin-bottom: 32px; }
-            .section-header h2 { font-size: 1.7rem; line-height: 1.3; }
-            .section-header .chapter-tag { font-size: 0.68rem; letter-spacing: 0.16em; }
-            .section-header .subtitle { font-size: 0.86rem; }
+            /* C. 字母"通电"循环微光（暗示可点击，书写完成后启用） */
+            .hero-english-name.lit .hero-letter { animation: letterGlow 3.6s ease-in-out infinite; }
+            .hero-english-name.lit .hero-letter:nth-child(2){ animation-delay: 0.25s; }
+            .hero-english-name.lit .hero-letter:nth-child(3){ animation-delay: 0.50s; }
+            .hero-english-name.lit .hero-letter:nth-child(4){ animation-delay: 0.75s; }
+            .hero-english-name.lit .hero-letter:nth-child(5){ animation-delay: 1.00s; }
+            .hero-english-name.lit .hero-letter:nth-child(6){ animation-delay: 1.25s; }
+            .hero-english-name.lit .hero-letter:nth-child(7){ animation-delay: 1.50s; }
+            .hero-english-name.lit .hero-letter:hover,
+            .hero-english-name.lit .hero-letter.active { animation: none; }
+            @keyframes letterGlow {
+                0%,100% { text-shadow: 0 0 30px rgba(200,130,110,0.20); }
+                50%     { text-shadow: 0 0 40px rgba(212,121,90,0.50); }
+            }
 
-            /* 侧写 */
-            .about-narrative p { font-size: 0.88rem; line-height: 1.8; }
-            .ability-mini-card { padding: 18px 16px; }
-            .ability-mini-card h4 { font-size: 0.98rem; }
+            /* D. reveal 进场附带"虚→实"聚焦 */
+            .reveal {
+                filter: blur(6px);
+                transition: opacity 0.7s var(--ease-out-expo),
+                            transform 0.7s var(--ease-out-expo),
+                            filter 0.7s var(--ease-out-expo);
+            }
+            .reveal.visible { filter: blur(0); }
 
-            /* 本色沉浸式 */
-            .immersive-scene { height: 500vh; }
-            .three-things-intro { padding: 56px 16px 0; }
-            .imm-panel { padding: 28px 16px 56px; }
-            .imm-big-title { font-size: 1.7rem; line-height: 1.2; }
-            .imm-eyebrow { font-size: 0.62rem; margin-bottom: 14px; }
-            .imm-motto { font-size: 0.88rem; }
-            .imm-story { font-size: 0.86rem; line-height: 1.8; }
-            .imm-tag { font-size: 0.74rem; padding: 5px 11px; }
-            .imm-scroll-hint { font-size: 0.58rem; }
+            /* H. 时间轴节点点亮脉冲 */
+            .timeline-node.visible .timeline-dot { animation: dotPulse 2.8s ease-in-out infinite; }
+            @keyframes dotPulse {
+                0%,100% { transform: scale(1); }
+                50%     { transform: scale(1.26); }
+            }
 
-            /* 章法对话 */
-            .interview-question { font-size: 1.2rem; }
-            .interview-answer { font-size: 0.88rem; line-height: 1.8; }
-            .interview-scene-tag { font-size: 0.72rem; }
-            .interview-btn { font-size: 0.78rem; padding: 8px 16px; }
-            .interview-dots { gap: 6px; }
-            .interview-dot { width: 6px; height: 6px; }
-
-            /* 践行 */
-            .hm-tab-bar { gap: 0; margin-bottom: 28px; }
-            .hm-tab { padding: 10px 14px; font-size: 0.78rem; }
-            .hm-tab-num { font-size: 0.6rem; margin-right: 4px; }
-            .hm-panel-keyword { font-size: 1.5rem; margin-bottom: 12px; }
-            .hm-panel-context { font-size: 0.62rem; }
-            .hm-story { font-size: 0.86rem; line-height: 1.85; margin-bottom: 16px; }
-            .hm-tag { font-size: 0.72rem; padding: 5px 12px; }
-
-            /* 来路时间线 */
-            .timeline-panel { padding: 16px 14px; }
-            .timeline-panel h3 { font-size: 0.95rem; }
-            .timeline-panel ul li { font-size: 0.74rem; }
-            .phase-num { font-size: 0.9rem; }
-            .timeline-spacer { height: 20vh; }
-
-            /* EQ 光谱 */
-            .eq-track { grid-template-columns: 88px 1fr; gap: 10px; padding: 12px 14px; }
-            .eq-label-name { font-size: 0.86rem; }
-            .eq-label-icon { display: none; }
-
-            /* 底气能力卡 */
-            /* (eq-spectrum already handled) */
-
-            /* 荣誉 */
-            .honors-badge-flex { gap: 7px; justify-content: center; }
-            .honor-badge { font-size: 0.72rem; padding: 7px 13px; }
-            .honors-subtitle { font-size: 0.78rem; }
-
-            /* 履历 */
-            .resume-tab { font-size: 0.74rem; padding: 6px 12px; }
-            .resume-item { padding: 18px 16px; }
-            .resume-item-title { font-size: 0.95rem; }
-            .resume-item-org { font-size: 0.75rem; }
-            .resume-item ul li { font-size: 0.78rem; }
-            .resume-item-date { font-size: 0.68rem; }
-
-            /* 兴趣 */
-            .im-card { min-height: 150px; padding: 20px 16px; }
-            .im-title { font-size: 1rem; }
-            .im-desc { font-size: 0.78rem; }
-            .im-anchor { font-size: 0.66rem; }
-
-            /* 来信 */
-            .closing-quote { font-size: 1.5rem; }
-            .closing-sub { font-size: 0.86rem; }
-            .closing-invite { font-size: 0.84rem; margin-bottom: 32px; }
-            .contact-chip { font-size: 0.78rem; padding: 9px 16px; width: 100%; text-align: center; justify-content: center; }
-            .back-to-top { font-size: 0.72rem; margin-top: 32px; }
-
-            /* 进入页刮刮乐 */
-            .entry-card { padding: 36px 24px 28px; }
-            .entry-scratch-wrapper { width: 200px; height: 80px; }
-            .entry-scratch-reveal { font-size: 1.8rem; }
-        }
-    </style>
-
-    <!-- ══ 汉堡菜单样式（内联，避免影响 PC） ══ -->
-    <style>
-        .hamburger {
-            display: none;
-            flex-direction: column; gap: 5px;
-            cursor: pointer; background: none; border: none;
-            padding: 4px; z-index: 201;
-        }
-        .hamburger span {
-            display: block; width: 22px; height: 2px;
-            background: var(--text-secondary); border-radius: 2px;
-            transition: all 0.35s var(--ease-soft);
-        }
-        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-        .mobile-menu {
-            display: none;
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 200;
-            background: rgba(10,10,16,0.97);
-            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            flex-direction: column; align-items: center; justify-content: center;
-            gap: 4px;
-            opacity: 0; transform: translateY(-12px);
-            transition: opacity 0.4s var(--ease-out-expo), transform 0.4s var(--ease-out-expo);
-            pointer-events: none;
-        }
-        .mobile-menu.open {
-            display: flex; opacity: 1; transform: translateY(0);
-            pointer-events: auto;
-        }
-        .mobile-menu a {
-            font-family: var(--font-display);
-            font-size: 2rem; font-weight: 400;
-            letter-spacing: 0.06em; color: var(--text-muted);
-            text-decoration: none; padding: 12px 0;
-            transition: color 0.3s, transform 0.3s;
-            display: block;
-        }
-        .mobile-menu a:hover, .mobile-menu a.active {
-            color: var(--text-primary);
-            transform: translateX(6px);
-        }
-        .mobile-menu-cta {
-            margin-top: 24px;
-            padding: 12px 36px; border-radius: 28px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: transparent; color: var(--text-secondary);
-            font-size: 0.92rem; letter-spacing: 0.08em;
-            cursor: pointer; font-family: var(--font-serif);
-            transition: all 0.4s;
-        }
-        .mobile-menu-cta:hover {
-            background: rgba(200,110,85,0.12);
-            border-color: var(--accent-rose);
-            color: var(--text-primary);
-        }
-        .mobile-menu-eyebrow {
-            font-family: var(--font-mono); font-size: 0.62rem;
-            color: var(--text-muted); letter-spacing: 0.2em;
-            text-transform: uppercase; margin-bottom: 24px;
+            /* G. 3D 倾斜卡（JS 赋予 .tilt，仅指针设备） */
+            .tilt { transition: transform 0.4s var(--ease-soft); transform-style: preserve-3d; }
         }
     </style>
 </head>
@@ -1571,24 +1432,7 @@
         <a href="#outro">来信</a>
     </div>
     <button class="nav-cta" onclick="document.getElementById('outro').scrollIntoView({behavior:'smooth'})">联系我</button>
-    <!-- 汉堡菜单按钮（仅移动端可见） -->
-    <button class="hamburger" id="hamburgerBtn" aria-label="菜单">
-        <span></span><span></span><span></span>
-    </button>
 </nav>
-
-<!-- 移动端全屏菜单 -->
-<div class="mobile-menu" id="mobileMenu">
-    <span class="mobile-menu-eyebrow">— 导航 —</span>
-    <a href="#about-me" onclick="closeMobileMenu()">侧写</a>
-    <a href="#three-things" onclick="closeMobileMenu()">本色</a>
-    <a href="#timeline-section" onclick="closeMobileMenu()">来路</a>
-    <a href="#abilities" onclick="closeMobileMenu()">底气</a>
-    <a href="#resume-detail" onclick="closeMobileMenu()">履历</a>
-    <a href="#interests" onclick="closeMobileMenu()">闲笔</a>
-    <a href="#outro" onclick="closeMobileMenu()">来信</a>
-    <button class="mobile-menu-cta" onclick="closeMobileMenu(); document.getElementById('outro').scrollIntoView({behavior:'smooth'})">联系我</button>
-</div>
 
 <!-- ═══ 章节进度点 ═══ -->
 <div class="chapter-progress" id="chapterProgress">
@@ -1837,7 +1681,7 @@
             <div class="section-header reveal">
                 <span class="chapter-tag">Chapter 04 · 践行</span>
                 <h2>有几个瞬间，<br>我记得很清楚。</h2>
-                <p class="subtitle">五个场景，五种做事的侧面——点击切换。</p>
+                <p class="subtitle">六个场景，六种做事的侧面——点击切换。</p>
             </div>
 
             <!-- 标签栏 -->
@@ -1847,6 +1691,7 @@
                 <button class="hm-tab" data-hm="2"><span class="hm-tab-num">03</span>口译</button>
                 <button class="hm-tab" data-hm="3"><span class="hm-tab-num">04</span>产品</button>
                 <button class="hm-tab" data-hm="4"><span class="hm-tab-num">05</span>判断</button>
+                <button class="hm-tab" data-hm="5"><span class="hm-tab-num">06</span>增长</button>
             </div>
 
             <!-- 内容面板 -->
@@ -1904,6 +1749,17 @@
                     <div class="hm-panel-right">
                         <p class="hm-story">继学杯决赛的最后一个问题，对方辩友问我一个我完全没预期的角度。我沉了一秒，然后用对方的逻辑重新推出我的结论——反而比我准备的那套更稳。评委后来说，那一段是全场最好的临场发挥。我知道，那是几百小时辩论积累的东西在那一秒把我托住了。</p>
                         <span class="hm-tag">第十三届继学杯辩论赛 · 冠军 / 全程次佳辩手</span>
+                    </div>
+                </div>
+
+                <div class="hm-panel" id="hmPanel5">
+                    <div class="hm-panel-left">
+                        <h3 class="hm-panel-keyword">让<em>留存</em><br>不再<br>往下掉。</h3>
+                        <span class="hm-panel-context">One2X · 产品运营 · 2026</span>
+                    </div>
+                    <div class="hm-panel-right">
+                        <p class="hm-story">在 One2X，我负责 AI 视频生成产品 Medeo 的用户增长，把宣发、内容制作、内容运营到反馈收集拉成同一条链路。当我第一次看到留存曲线不是往下掉、而是稳稳抬了约 <strong>20%</strong> 时，我才真正确认——增长不是砸量，是把对的内容、对的人和对的产品接在一起。</p>
+                        <a class="hm-tag" href="https://medeoai.com/" target="_blank" rel="noopener">One2X · Medeo 产品运营 · medeoai.com ↗</a>
                     </div>
                 </div>
 
@@ -1992,6 +1848,7 @@
                             <ul>
                                 <li>不满足于"做过"，更在意"做成了什么"</li>
                                 <li>不满足于"能做"，更在意"能不能长期做"</li>
+                                <li>One2X 产品运营：AI 产品增长全链路，留存 +20%</li>
                                 <li>新东方学术讲师：把教学标准化，可复用</li>
                                 <li>沉淀方法论，让每一次经验都有后续</li>
                             </ul>
@@ -2034,7 +1891,7 @@
                         <span class="eq-label-icon">PRODUCT · DESIGN</span>
                     </div>
                     <div class="eq-bar-track"><div class="eq-bar-fill" style="width:78%"></div></div>
-                    <div class="eq-detail">Figma 原型 · PRD 撰写<br>PS / AI / InDesign · 数据可视化</div>
+                    <div class="eq-detail">Figma 原型 · PRD 撰写 · AI 产品增长<br>PS / AI / InDesign · 用户留存 +20%</div>
                 </div>
                 <div class="eq-track">
                     <div class="eq-label">
@@ -2111,6 +1968,19 @@
             <!-- 实习经历 -->
             <div class="resume-panel active" id="tab-internship">
                 <div class="resume-item-list">
+                    <div class="resume-item reveal">
+                        <div class="resume-item-header">
+                            <div>
+                                <div class="resume-item-title">One2X · 产品运营</div>
+                                <div class="resume-item-org">AI 视频生成产品 Medeo · 用户增长全链路</div>
+                            </div>
+                            <span class="resume-item-date">2026.04 — 至今</span>
+                        </div>
+                        <ul>
+                            <li>负责 AI 视频生成 Agent「Medeo」用户增长，拉通产品宣发、内容制作、内容运营与反馈收集全链路，落地精细化运营策略，用户留存率较入职初期提升约 <strong>20%</strong></li>
+                            <li>搭建"反馈收集–数据分析–需求反哺"闭环，将用户真实痛点转化为产品迭代输入，持续扩大内容矩阵覆盖，沉淀可复用的内容运营打法</li>
+                        </ul>
+                    </div>
                     <div class="resume-item reveal">
                         <div class="resume-item-header">
                             <div>
@@ -2547,32 +2417,6 @@
 
 <script>
 (function() {
-
-    /* ═══ 汉堡菜单 ═══ */
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const mobileMenu   = document.getElementById('mobileMenu');
-
-    function openMobileMenu() {
-        hamburgerBtn.classList.add('open');
-        mobileMenu.classList.add('open');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeMobileMenu() {
-        hamburgerBtn.classList.remove('open');
-        mobileMenu.classList.remove('open');
-        document.body.style.overflow = '';
-    }
-    window.closeMobileMenu = closeMobileMenu;
-
-    hamburgerBtn.addEventListener('click', () => {
-        if (mobileMenu.classList.contains('open')) closeMobileMenu();
-        else openMobileMenu();
-    });
-
-    // 点击菜单外区域关闭
-    mobileMenu.addEventListener('click', (e) => {
-        if (e.target === mobileMenu) closeMobileMenu();
-    });
 
     /* ═══ 进入页刮刮乐 ═══ */
     const entryScratchWrapper = document.getElementById('entryScratchWrapper');
@@ -3067,6 +2911,168 @@
             posY = 0; velY = 0;
         });
     });
+})();
+</script>
+
+<!-- ═══ v8 增补 · 交互与动效增强 ═══ -->
+<script>
+(function(){
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canHover = window.matchMedia('(hover: hover)').matches;
+
+    /* A. Hero 名字逐字书写 + C. 书写完成后通电微光 */
+    const heroName = document.getElementById('heroEnglishName');
+    let nameWritten = false;
+    function playNameWrite(){
+        if (!heroName || nameWritten) return;
+        nameWritten = true;
+        if (reduce) { heroName.classList.add('lit'); return; }
+        heroName.classList.add('write');
+        setTimeout(()=> heroName.classList.add('lit'), 1500);
+    }
+    // 揭开刮刮乐后、Hero 显露时触发
+    const redeemBtn = document.getElementById('entryRedeemBtn');
+    if (redeemBtn) redeemBtn.addEventListener('click', ()=> setTimeout(playNameWrite, 250));
+    // 兜底：仅当进入页遮罩不存在/已隐藏时，靠进入视口触发（避免遮罩仍覆盖时被提前播放）
+    const heroSection = document.getElementById('hero');
+    const ovAtLoad = document.getElementById('entryOverlay');
+    if (heroSection && (!ovAtLoad || getComputedStyle(ovAtLoad).display === 'none')) {
+        const hObs = new IntersectionObserver((es)=>{
+            es.forEach(e=>{ if (e.isIntersecting) { playNameWrite(); hObs.disconnect(); } });
+        }, {threshold: 0.4});
+        hObs.observe(heroSection);
+    }
+
+    /* B. Hero 聚光灯 + J. 指针视差（仅指针设备） */
+    if (heroSection && canHover) {
+        const spot = document.createElement('div');
+        spot.className = 'hero-spotlight';
+        heroSection.insertBefore(spot, heroSection.firstChild);
+        const heroLeft = heroSection.querySelector('.hero-left');
+        const heroRight = heroSection.querySelector('.hero-right');
+        heroSection.addEventListener('mousemove', (e)=>{
+            const r = heroSection.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width;
+            const py = (e.clientY - r.top) / r.height;
+            spot.style.setProperty('--mx', (px*100).toFixed(1) + '%');
+            spot.style.setProperty('--my', (py*100).toFixed(1) + '%');
+            if (!reduce) {
+                const dx = (px - 0.5), dy = (py - 0.5);
+                if (heroLeft)  heroLeft.style.transform  = `translate(${(-dx*10).toFixed(1)}px, ${(-dy*8).toFixed(1)}px)`;
+                if (heroRight && !heroRight.classList.contains('show-meaning'))
+                    heroRight.style.transform = `translate(${(dx*12).toFixed(1)}px, ${(dy*10).toFixed(1)}px)`;
+            }
+        });
+        heroSection.addEventListener('mouseleave', ()=>{
+            if (heroLeft)  heroLeft.style.transform  = '';
+            if (heroRight) heroRight.style.transform = '';
+        });
+    }
+
+    /* G. 卡片 3D 倾斜跟随（能力小卡 + 兴趣卡，仅指针设备） */
+    if (canHover && !reduce) {
+        const tiltEls = document.querySelectorAll('.ability-mini-card, .im-card');
+        tiltEls.forEach(el=>{
+            el.classList.add('tilt');
+            el.addEventListener('mousemove', (e)=>{
+                const r = el.getBoundingClientRect();
+                const px = (e.clientX - r.left) / r.width - 0.5;
+                const py = (e.clientY - r.top) / r.height - 0.5;
+                el.style.transform = `perspective(800px) rotateX(${(-py*6).toFixed(2)}deg) rotateY(${(px*6).toFixed(2)}deg) translateY(-4px)`;
+            });
+            el.addEventListener('mouseleave', ()=>{ el.style.transform = ''; });
+        });
+    }
+
+    /* I. 磁吸按钮（仅指针设备） */
+    if (canHover && !reduce) {
+        const magnets = document.querySelectorAll('.hero-enter-btn, .entry-redeem-btn, .nav-cta, .contact-chip, .back-to-top');
+        magnets.forEach(btn=>{
+            btn.addEventListener('mousemove', (e)=>{
+                const r = btn.getBoundingClientRect();
+                const dx = e.clientX - (r.left + r.width/2);
+                const dy = e.clientY - (r.top + r.height/2);
+                btn.style.transform = `translate(${(dx*0.18).toFixed(1)}px, ${(dy*0.22).toFixed(1)}px)`;
+            });
+            btn.addEventListener('mouseleave', ()=>{ btn.style.transform = ''; });
+        });
+    }
+
+    /* F. 数字滚动递增（本色三屏的 .imm-num 含数字者） */
+    function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+    function countUp(el){
+        const raw = el.textContent;
+        const m = raw.match(/(\d[\d,]*)/);
+        if (!m) return;
+        const target = parseInt(m[1].replace(/,/g,''), 10);
+        if (!isFinite(target) || target <= 0) return;
+        const prefix = raw.slice(0, m.index);
+        const suffix = raw.slice(m.index + m[1].length);
+        const dur = 1100; const start = performance.now();
+        function frame(now){
+            const p = Math.min(1, (now - start) / dur);
+            const val = Math.round(easeOut(p) * target);
+            el.textContent = prefix + val.toLocaleString('en-US') + suffix;
+            if (p < 1) requestAnimationFrame(frame);
+            else el.textContent = raw;
+        }
+        requestAnimationFrame(frame);
+    }
+    const three = document.getElementById('three-things');
+    if (three && !reduce) {
+        let counted = false;
+        const cObs = new IntersectionObserver((es)=>{
+            es.forEach(e=>{
+                if (e.isIntersecting && !counted) {
+                    counted = true;
+                    three.querySelectorAll('.imm-num').forEach(countUp);
+                    cObs.disconnect();
+                }
+            });
+        }, {threshold: 0.25});
+        cObs.observe(three);
+    }
+
+    /* F. 能力条入场从 0 填充 */
+    const eqSpectrum = document.querySelector('.eq-spectrum');
+    if (eqSpectrum) {
+        const fills = eqSpectrum.querySelectorAll('.eq-bar-fill');
+        if (!reduce) {
+            fills.forEach(f=>{ f.dataset.w = f.style.width || getComputedStyle(f).width; f.style.width = '0'; });
+            let filled = false;
+            const eObs = new IntersectionObserver((es)=>{
+                es.forEach(e=>{
+                    if (e.isIntersecting && !filled) {
+                        filled = true;
+                        fills.forEach(f=>{ f.style.width = f.dataset.w; });
+                        eObs.disconnect();
+                    }
+                });
+            }, {threshold: 0.3});
+            eObs.observe(eqSpectrum);
+        }
+    }
+
+    /* E. 无穷环画布随本色三屏轻微变色 */
+    const canvasEl = document.getElementById('infinity-canvas');
+    if (canvasEl && three && !reduce) {
+        const tints = ['hue-rotate(0deg) saturate(1)', 'hue-rotate(-9deg) saturate(1.12)', 'hue-rotate(11deg) saturate(1.08)'];
+        let lastTint = '';
+        function tintByPanel(){
+            const r = three.getBoundingClientRect();
+            const inView = r.top < window.innerHeight * 0.8 && r.bottom > window.innerHeight * 0.2;
+            let active = 0;
+            for (let i = 0; i < 3; i++){
+                const p = document.getElementById('immPanel' + i);
+                if (p && p.classList.contains('active')) active = i;
+            }
+            const next = inView ? tints[active] : 'hue-rotate(0deg) saturate(1)';
+            if (next !== lastTint) { canvasEl.style.filter = next; lastTint = next; }
+        }
+        window.addEventListener('scroll', tintByPanel, {passive:true});
+        tintByPanel();
+    }
+
 })();
 </script>
 
