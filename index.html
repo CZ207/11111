@@ -223,6 +223,23 @@
             border-color: var(--accent-rose);
             color: var(--text-primary);
         }
+        /* 汉堡按钮：PC 端默认隐藏，仅移动端显示 */
+        .nav-burger {
+            display: none; width: 28px; height: 20px;
+            background: none; border: none; cursor: pointer;
+            padding: 0; position: relative; z-index: 101;
+        }
+        .nav-burger span {
+            position: absolute; left: 0; right: 0; height: 2px;
+            background: var(--text-primary); border-radius: 2px;
+            transition: transform 0.35s var(--ease-soft), opacity 0.25s ease;
+        }
+        .nav-burger span:nth-child(1) { top: 1px; }
+        .nav-burger span:nth-child(2) { top: 9px; }
+        .nav-burger span:nth-child(3) { top: 17px; }
+        .top-nav.menu-open .nav-burger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .top-nav.menu-open .nav-burger span:nth-child(2) { opacity: 0; }
+        .top-nav.menu-open .nav-burger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
         /* ── 章节进度点 ── */
         .chapter-progress {
@@ -1351,6 +1368,86 @@
             /* G. 3D 倾斜卡（JS 赋予 .tilt，仅指针设备） */
             .tilt { transition: transform 0.4s var(--ease-soft); transform-style: preserve-3d; }
         }
+        /* ════════════════════════════════════════════════
+           v9 移动端优化（仅作用于 ≤900 / ≤600，PC 端 >900 完全不受影响）
+        ════════════════════════════════════════════════ */
+        @media (max-width: 900px) {
+            /* 导航 → 汉堡菜单 */
+            .top-nav { padding: 12px 18px; }
+            .nav-burger { display: block; }
+            .nav-cta { display: none; }
+            .nav-links {
+                position: absolute; top: 100%; left: 0; right: 0;
+                flex-direction: column; align-items: stretch; gap: 2px;
+                background: rgba(12,12,18,0.96);
+                backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+                border-bottom: 1px solid var(--glass-border);
+                padding: 0 16px; max-height: 0; overflow: hidden;
+                opacity: 0; pointer-events: none;
+                transition: max-height 0.42s var(--ease-out-expo),
+                            opacity 0.3s ease, padding 0.42s var(--ease-out-expo);
+            }
+            .top-nav.menu-open .nav-links {
+                max-height: 80vh; opacity: 1; pointer-events: auto;
+                padding: 10px 16px 16px;
+            }
+            .nav-links a {
+                padding: 13px 14px; font-size: 1rem; border-radius: 10px;
+                border-bottom: 1px solid rgba(255,255,255,0.04); text-align: left;
+            }
+
+            /* 本色三屏：取消粘性钉住，改为顺滑堆叠（避免 100vh 内容被裁切） */
+            .immersive-scene { height: auto; }
+            .immersive-sticky { position: static; height: auto; overflow: visible; display: block; }
+            .imm-panels { overflow: visible; }
+            .imm-panel {
+                position: relative; inset: auto;
+                opacity: 1 !important; transform: none !important; pointer-events: auto;
+                padding: 52px 20px;
+            }
+            .imm-panel + .imm-panel { border-top: 1px solid rgba(255,255,255,0.06); }
+            .imm-scroll-hint { display: none; }
+            .three-things-intro { padding: 80px 20px 0; }
+
+            /* 践行经历卡：单列堆叠 */
+            .hm-panel.active { grid-template-columns: 1fr; gap: 20px; }
+            .hm-panel-keyword { font-size: clamp(2rem, 8vw, 2.6rem); }
+            .hm-tab { padding: 11px 18px; }
+
+            /* 章法问答：单列堆叠，问题不再粘性 */
+            .interview-content { grid-template-columns: 1fr; gap: 22px; }
+            .interview-q-side { position: static; }
+            .interview-question { min-height: auto; margin-bottom: 8px; }
+            .interview-answer { min-height: 120px; }
+
+            /* 底气能力条：三列 → 单列 */
+            .eq-track { grid-template-columns: 1fr; gap: 10px; padding: 18px 20px; }
+            .eq-detail { text-align: left; }
+
+            .section-header { margin-bottom: 40px; }
+        }
+
+        @media (max-width: 600px) {
+            .section { padding: 72px 20px 52px; }
+            .section-header { margin-bottom: 32px; }
+            .section-header h2 { font-size: 1.7rem; }
+            .three-things-intro { padding: 72px 20px 0; }
+            .hero-section { padding: 84px 20px 56px; }
+            .hero-english-name { font-size: 2.6rem; }
+            .hero-chinese-name { font-size: 1.5rem; }
+            .hero-quick-capsules { gap: 8px; margin-top: 22px; }
+            .hero-quick-capsules .capsule { font-size: 0.72rem; padding: 6px 14px; }
+            .hero-enter-btn { padding: 13px 30px; font-size: 0.84rem; margin-top: 28px; }
+            .imm-panel { padding: 44px 18px; }
+            .imm-big-title { font-size: 1.8rem; }
+            .imm-motto { font-size: 1rem; }
+            .hm-panel-keyword { font-size: clamp(1.8rem, 9vw, 2.3rem); }
+            .hm-tab { padding: 10px 15px; font-size: 0.84rem; }
+            .closing-quote { font-size: 1.8rem; }
+            .outro-section { padding: 50px 20px; }
+            .timeline-node { padding-left: 42px; }
+            .resume-item { padding: 20px 18px 18px; }
+        }
     </style>
 </head>
 <body>
@@ -1432,6 +1529,7 @@
         <a href="#outro">来信</a>
     </div>
     <button class="nav-cta" onclick="document.getElementById('outro').scrollIntoView({behavior:'smooth'})">联系我</button>
+    <button class="nav-burger" id="navBurger" aria-label="菜单" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ═══ 章节进度点 ═══ -->
@@ -1492,7 +1590,7 @@
             </div>
             <div class="about-grid">
                 <div class="about-narrative reveal">
-                    <p>我有个习惯——<span class="highlight">拿到一件事，第一反应不是"怎么做"，而是"它现在乱在哪里"，该怎么梳理。</span></p>
+                    <p>我有个习惯——<span class="highlight">拿到一件事，第一反应不是"怎么做"，而是"它现在乱在哪里"，该怎么梳理。</span>。</p>
                     <p>不知道从什么时候开始，我发现自己对<span class="highlight">"把散的东西聚拢"</span>这件事有种持续的兴趣。辩论里要把论点收拢，项目里要把节点对齐，实习里要把流程跑顺——场景换来换去，但我在做的事情好像一直是同一件：让原本模糊的东西，变得清楚一点、能动起来。</p>
                     <p>所以我的经历看起来挺杂，但我不觉得它们彼此无关。它们更像是<span class="highlight">同一件工具在不同材料上留下的切面</span>。</p>
                     <p>这几年里还有件事我想了很久很久，也做了很久很久——遇到机会就尽力去争。不管是竞选、比赛、口译、还是我感兴趣的实习，哪怕时间排得很满，我也会先抢下来。因为我知道：<span class="highlight">要么我得到，要么我学到，不会吃亏</span>。</p>
@@ -3073,6 +3171,26 @@
         tintByPanel();
     }
 
+})();
+</script>
+<!-- ═══ v9 增补 · 移动端汉堡菜单 ═══ -->
+<script>
+(function(){
+    const nav = document.getElementById('topNav');
+    const burger = document.getElementById('navBurger');
+    if (!nav || !burger) return;
+    function closeMenu(){ nav.classList.remove('menu-open'); burger.setAttribute('aria-expanded','false'); }
+    burger.addEventListener('click', function(e){
+        e.stopPropagation();
+        const open = nav.classList.toggle('menu-open');
+        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.querySelectorAll('.nav-links a').forEach(function(a){
+        a.addEventListener('click', closeMenu);
+    });
+    document.addEventListener('click', function(e){
+        if (nav.classList.contains('menu-open') && !nav.contains(e.target)) closeMenu();
+    });
 })();
 </script>
 
