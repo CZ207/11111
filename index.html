@@ -68,29 +68,52 @@
             position:fixed; inset:0; z-index:1000;
             background:#f4f2ef;
             display:flex; align-items:center; justify-content:center;
-            overflow:hidden;
+            overflow-x:hidden; overflow-y:auto; padding:24px 0;
         }
         .entry-overlay.gone { display:none; }
-        .entry-card {
-            position:relative; width:90%; max-width:355px;
-            background:#ffffff; border-radius:24px;
-            padding:46px 34px 34px;
-            box-shadow:0 24px 60px rgba(0,0,0,0.10), 0 6px 22px rgba(0,0,0,0.06);
-            text-align:center; z-index:2;
+        .entry-stack {
+            position:relative; z-index:2; width:min(90%, 355px); margin:auto;
+            display:grid; gap:14px;
             transition:transform 1.1s cubic-bezier(0.5,0,0.8,0.4), opacity 0.9s ease 0.15s;
         }
-        .entry-overlay.melting .entry-card {
+        .entry-portfolio {
+            position:relative; display:block; padding:25px 28px 22px;
+            overflow:hidden; border:1px solid rgba(50,43,39,0.08); border-radius:24px;
+            background:linear-gradient(145deg, #fff 0%, #f8f4ee 100%);
+            box-shadow:0 20px 48px rgba(0,0,0,0.09), 0 5px 18px rgba(0,0,0,0.05);
+            color:#1c1c1e; text-decoration:none; text-align:left;
+            transition:transform 0.45s var(--ease-soft), box-shadow 0.45s var(--ease-soft), border-color 0.35s ease;
+        }
+        .entry-portfolio::before {
+            content:''; position:absolute; width:130px; height:130px; right:-52px; top:-58px;
+            border:1px solid rgba(188,112,82,0.18); border-radius:50%;
+            box-shadow:0 0 0 18px rgba(188,112,82,0.035), 0 0 0 38px rgba(188,112,82,0.025);
+        }
+        .entry-portfolio:hover { transform:translateY(-4px); border-color:rgba(188,112,82,0.25); box-shadow:0 26px 58px rgba(0,0,0,0.12), 0 8px 22px rgba(0,0,0,0.06); }
+        .entry-portfolio-kicker { display:block; margin-bottom:9px; color:#a35f49; font-family:var(--font-serif); font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; }
+        .entry-portfolio-title { display:block; max-width:280px; font-family:var(--font-serif); font-size:1.35rem; font-weight:400; line-height:1.35; letter-spacing:0.02em; }
+        .entry-portfolio-meta { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:17px; padding-top:13px; border-top:1px solid rgba(40,34,31,0.09); color:#8a8179; font-family:var(--font-serif); font-size:0.63rem; letter-spacing:0.07em; }
+        .entry-portfolio-meta b { flex:0 0 auto; color:#4b413b; font-size:0.72rem; font-weight:400; }
+        .entry-personal-wrap { display:grid; gap:8px; }
+        .entry-card {
+            position:relative; width:100%;
+            background:#ffffff; border-radius:24px;
+            padding:32px 34px 27px;
+            box-shadow:0 24px 60px rgba(0,0,0,0.10), 0 6px 22px rgba(0,0,0,0.06);
+            text-align:center; z-index:2;
+        }
+        .entry-overlay.melting .entry-stack {
             transform:translateY(120vh) rotate(7deg) scale(0.92);
             opacity:0;
         }
         .entry-card-label {
             font-family:var(--font-serif); font-size:0.88rem;
             letter-spacing:0.12em; color:#888;
-            margin-bottom:30px; text-transform:uppercase;
+            margin-bottom:24px; text-transform:uppercase;
         }
         .entry-scratch-wrapper {
             width:240px; height:96px; border-radius:12px;
-            margin:0 auto 32px; cursor:grab;
+            margin:0 auto 24px; cursor:grab;
             user-select:none; -webkit-user-select:none; position:relative;
         }
         .entry-scratch-wrapper:active { cursor:grabbing; }
@@ -112,7 +135,7 @@
         }
         @keyframes hintPulse { 0%,100%{opacity:0.3} 50%{opacity:0.85} }
         .entry-scratch-wrapper.scratched .entry-scratch-hint { opacity:0; animation:none; }
-        .entry-barcode { width:82%; height:26px; margin:0 auto 20px; opacity:0.6; }
+        .entry-barcode { width:82%; height:26px; margin:0 auto 14px; opacity:0.6; }
         .entry-barcode svg { width:100%; height:100%; }
         .entry-redeem-btn {
             display:inline-block; margin-top:4px;
@@ -124,7 +147,8 @@
         }
         .entry-redeem-btn.visible { opacity:1; transform:translateY(0); pointer-events:auto; }
         .entry-redeem-btn:hover { color:#111; }
-        .entry-card-footer { margin-top:20px; font-size:0.58rem; color:#bbb; letter-spacing:0.05em; line-height:1.5; }
+        .entry-card-footer { margin-top:15px; font-size:0.58rem; color:#bbb; letter-spacing:0.05em; line-height:1.5; }
+        .entry-site-note { margin:0; color:#8d8680; font-family:var(--font-serif); font-size:0.7rem; letter-spacing:0.12em; text-align:center; }
         /* 融化帘幕 */
         .melt-drips { position:absolute; inset:0; z-index:1; pointer-events:none; display:flex; }
         .melt-drips i {
@@ -185,6 +209,15 @@
             font-family:var(--font-serif);
         }
         .nav-cta:hover { background:rgba(255,255,255,0.07); border-color:var(--accent-rose); color:var(--text-primary); }
+        .nav-actions { display:flex; align-items:center; gap:8px; }
+        .nav-portfolio {
+            padding:8px 18px; border:1px solid rgba(212,121,90,0.42); border-radius:22px;
+            background:rgba(212,121,90,0.12); color:var(--text-primary); text-decoration:none;
+            font-family:var(--font-serif); font-size:0.82rem; letter-spacing:0.05em;
+            transition:all 0.4s var(--ease-soft);
+        }
+        .nav-portfolio:hover { background:rgba(212,121,90,0.22); border-color:var(--accent-warm); box-shadow:0 0 24px rgba(212,121,90,0.12); }
+        .nav-portfolio-mobile { display:none; }
         .nav-burger { display:none; width:28px; height:20px; background:none; border:none; cursor:pointer; padding:0; position:relative; z-index:101; }
         .nav-burger span { position:absolute; left:0; right:0; height:2px; background:var(--text-primary); border-radius:2px; transition:transform 0.35s var(--ease-soft), opacity 0.25s ease; }
         .nav-burger span:nth-child(1){top:1px} .nav-burger span:nth-child(2){top:9px} .nav-burger span:nth-child(3){top:17px}
@@ -763,7 +796,7 @@
         @media (max-width: 900px) {
             .top-nav { padding:12px 18px; }
             .nav-burger { display:block; }
-            .nav-cta { display:none; }
+            .nav-actions { display:none; }
             .nav-pill { display:none; }
             .nav-links {
                 position:absolute; top:100%; left:0; right:0;
@@ -777,6 +810,7 @@
             }
             .top-nav.menu-open .nav-links { max-height:80vh; opacity:1; pointer-events:auto; padding:10px 16px 16px; }
             .nav-links a { padding:13px 14px; font-size:1rem; border-radius:10px; border-bottom:1px solid rgba(255,255,255,0.04); text-align:left; }
+            .nav-links .nav-portfolio-mobile { display:block; color:var(--accent-warm); }
             .thermo { display:none; }
             .section { padding:84px 20px 56px; }
             .section-header { margin-bottom:40px; }
@@ -963,7 +997,14 @@
 </svg>
 
 <div class="entry-overlay" id="entryOverlay">
-    <div class="entry-card" id="entryCard">
+    <div class="entry-stack">
+        <a class="entry-portfolio" href="portfolio/index.html" aria-label="点击进入代表作品集，快速了解我">
+            <span class="entry-portfolio-kicker">Selected work · 2026</span>
+            <strong class="entry-portfolio-title">点击进入代表作品集，<br>快速了解我</strong>
+            <span class="entry-portfolio-meta"><span>产品运营 · 研究分析 · 提效工具</span><b>进入 ↗</b></span>
+        </a>
+        <div class="entry-personal-wrap">
+            <div class="entry-card" id="entryCard">
         <div class="entry-card-label">For everything brave</div>
         <div class="entry-scratch-wrapper" id="entryScratchWrapper">
             <div class="entry-scratch-reveal" id="entryRevealText">Becoming</div>
@@ -1013,6 +1054,9 @@
         </div>
         <button class="entry-redeem-btn" id="entryRedeemBtn">进去看看 →</button>
         <div class="entry-card-footer">Valid only for one person. Non-transferable. Void where prohibited.</div>
+            </div>
+            <p class="entry-site-note">（个人网站入口）</p>
+        </div>
     </div>
 </div>
 
@@ -1033,8 +1077,12 @@
         <a href="#resume-v713">履历</a>
         <a href="#interests-v713">闲笔</a>
         <a href="#outro">来信</a>
+        <a href="portfolio/index.html" class="nav-portfolio-mobile">快速作品集 ↗</a>
     </div>
-    <button class="nav-cta" onclick="document.getElementById('outro').scrollIntoView({behavior:'smooth'})">联系我</button>
+    <div class="nav-actions">
+        <a class="nav-portfolio" href="portfolio/index.html">快速作品集 ↗</a>
+        <button class="nav-cta" onclick="document.getElementById('outro').scrollIntoView({behavior:'smooth'})">联系我</button>
+    </div>
     <button class="nav-burger" id="navBurger" aria-label="菜单" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
 
@@ -1652,6 +1700,14 @@ ticks.push(function(t){ Fluid.tick(t); });
     var redeemBtn=document.getElementById('entryRedeemBtn');
     var overlay=document.getElementById('entryOverlay');
     if (!overlay) { Fluid.openGate(); return; }
+    if (new URLSearchParams(location.search).get('from')==='portfolio') {
+        overlay.classList.add('gone');
+        Fluid.openGate();
+        document.getElementById('topNav').classList.add('visible');
+        var directThermo=document.getElementById('thermo'); if(directThermo) directThermo.classList.add('visible');
+        history.replaceState(null,'',location.pathname+location.hash);
+        return;
+    }
     var ctx=canvas.getContext('2d');
     var scratching=false, scratched=0, THRESH=0.88;
 
@@ -1744,7 +1800,7 @@ ticks.push(function(t){ Fluid.tick(t); });
     var glow=document.createElement('div'); glow.className='cur-glow';
     document.body.appendChild(glow); document.body.appendChild(ring); document.body.appendChild(dot);
 
-    var MORPH='a, button, .capsule, .contact-chip, .imm-tag, .resume-tab, .interview-dot, .ex-arrow, .nav-cta, .seal-cta, .interview-btn, .back-to-top, .hero-enter-btn';
+    var MORPH='a, button, .capsule, .contact-chip, .imm-tag, .resume-tab, .interview-dot, .ex-arrow, .nav-cta, .nav-portfolio, .entry-portfolio, .seal-cta, .interview-btn, .back-to-top, .hero-enter-btn';
     var EXCL='.honor-badge, .thermo-tick, .nav-burger, .v713-debate-node';
     var GROW='.ex-card, .ability-mini-card, .hero-letter, .entry-scratch-canvas';
     var hoverEl=null, mode='free';

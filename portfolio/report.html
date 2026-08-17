@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="社交平台 AI 视频「求 Prompt」行为研究公开版，李睿泽 Griffin。">
+  <meta name="theme-color" content="#17110e">
+  <title>社交平台 AI 视频「求 Prompt」行为研究 · Griffin</title>
+  <link rel="icon" href="assets/images/avatar-chibi.webp" type="image/webp">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body class="report-page">
+  <a class="skip-link" href="#report-main">跳到报告正文</a>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+  <header class="report-nav">
+    <a href="case-one2x.html">← 返回 One2X 案例</a>
+    <span>PUBLIC RESEARCH / 2026</span>
+    <div><a href="assets/documents/one2x/prompt-behavior-research.docx" download>下载 DOCX</a><button type="button" onclick="window.print()">打印 / 保存 PDF</button></div>
+  </header>
+
+  <main id="report-main">
+    <header class="report-hero">
+      <div class="report-hero-meta"><span>USER RESEARCH</span><span>AI VIDEO × SOCIAL MEDIA</span></div>
+      <h1>社交平台 AI 视频<br>「求 Prompt」行为研究</h1>
+      <p class="report-deck">人们并不是在看到所有好效果时都会追问 Prompt。真正的转折点，是效果超出已有工具认知，同时又让人相信“这件事对我有用，而且我可能做得到”。</p>
+      <div class="report-byline"><span>李睿泽 Griffin</span><span>公开整理版 · 2026</span><span>TikTok / Instagram / X / Reddit / 抖音</span></div>
+      <div class="report-symbol" aria-hidden="true">?</div>
+    </header>
+
+    <article class="report-article">
+      <aside class="report-toc">
+        <p>CONTENTS</p>
+        <a href="#summary">01 · 摘要</a><a href="#framework">02 · 判断框架</a><a href="#motivation">03 · 动机</a><a href="#signals">04 · 内容信号</a><a href="#users">05 · 用户类型</a><a href="#platforms">06 · 平台差异</a><a href="#strategy">07 · 产品建议</a><a href="#limits">08 · 方法与边界</a>
+      </aside>
+
+      <div class="report-content">
+        <section id="summary" class="report-section report-summary">
+          <p class="report-chapter">01 / EXECUTIVE SUMMARY</p>
+          <h2>“求 Prompt”是兴趣、可用性与路径缺口同时出现的结果。</h2>
+          <p class="report-lead">在 AI 视频内容下，评论区询问 Prompt、工作流或使用工具，表面看是对生成方法的索取，实质上包含三个连续判断：效果是否值得复现、自己是否有使用场景，以及复制路径是否看起来可达。</p>
+          <div class="report-findings">
+            <article><span>01</span><h3>效果必须越过认知基线</h3><p>“好看”不够。用户需要感到结果具有意外性，或明显超出自己对常见模板和工具能力的理解。</p></article>
+            <article><span>02</span><h3>用户需要看见自己的场景</h3><p>娱乐、工作、表达、社交或身份展示中的任一用途，都会把被动观看转成方法追问。</p></article>
+            <article><span>03</span><h3>路径要半透明</h3><p>工具完全隐藏会让结果像魔法；步骤完全公开又降低追问必要。最佳状态是“看得见入口，看不全过程”。</p></article>
+          </div>
+        </section>
+
+        <section id="framework" class="report-section">
+          <p class="report-chapter">02 / DECISION FRAMEWORK</p>
+          <h2>一个更接近真实评论行为的公式</h2>
+          <div class="formula-card">
+            <span>效果超出预期</span><i>+</i><span>用户理解工具能做什么</span><i>+</i><span>用户相信自己有场景</span><b>=</b><strong>“求 Prompt”</strong>
+          </div>
+          <p>这个公式不是统计模型，而是解释框架。它帮助区分“单纯表达惊叹”和“准备进入行动”的评论：前者停留在情绪，后者已经开始降低复制成本。</p>
+          <div class="report-contrast">
+            <div><small>只有效果</small><b>“太酷了！”</b><p>情绪认可，但没有行动对象。</p></div>
+            <div><small>效果 + 场景</small><b>“这个能不能做成我的产品片？”</b><p>开始将能力映射到自身需求。</p></div>
+            <div><small>效果 + 场景 + 可达路径</small><b>“用的哪个模型？Prompt 怎么写？”</b><p>行动意图转化为具体方法询问。</p></div>
+          </div>
+        </section>
+
+        <section id="motivation" class="report-section">
+          <p class="report-chapter">03 / MOTIVATIONS</p>
+          <h2>三个表层动机，背后是不同的产品任务。</h2>
+          <div class="motivation-grid">
+            <article class="fun"><span>FUN</span><h3>我也想玩一次</h3><p>低风险、即时反馈、能用于朋友间表达。用户关心的是上手速度和结果可分享性。</p><small>产品任务：降低第一次生成门槛</small></article>
+            <article class="utility"><span>UTILITY</span><h3>这能替我完成工作</h3><p>营销、创作、教学、品牌内容等明确任务。用户更关注稳定性、可控性和可复用模板。</p><small>产品任务：让效果可预测、可编辑</small></article>
+            <article class="meaning"><span>MEANING</span><h3>这能表达我是谁</h3><p>个人记忆、身份展示、审美与情绪投射。用户愿意投入更多时间，但需要更细腻的控制。</p><small>产品任务：保留个人痕迹与叙事空间</small></article>
+          </div>
+        </section>
+
+        <section id="signals" class="report-section">
+          <p class="report-chapter">04 / CONTENT SIGNALS</p>
+          <h2>更容易触发追问的五类内容信号</h2>
+          <ol class="signal-list">
+            <li><b>意外，但又顺理成章</b><span>结果第一眼违背常识，下一秒又能被一句话解释，形成“我也能描述”的可复制感。</span></li>
+            <li><b>情绪可以被带走</b><span>内容不是只在原视频成立，而是能替换成自己的宠物、朋友、毕业、产品或记忆。</span></li>
+            <li><b>工具可见，路径不完整</b><span>用户知道这是某类 AI 工具完成的，但缺少模型、素材、参数或镜头组织中的关键一步。</span></li>
+            <li><b>创意可以被一句话说清</b><span>“小猫在体育场像运动员一样入场”比复杂但无法概括的视觉奇观更容易进入模仿。</span></li>
+            <li><b>效果具有生产价值</b><span>当用户判断它能用于账号、广告、教学或工作交付，追问会更具体，也更接近真实转化。</span></li>
+          </ol>
+        </section>
+
+        <section id="users" class="report-section">
+          <p class="report-chapter">05 / USER ARCHETYPES</p>
+          <h2>六种会“求 Prompt”的人，并不需要同一个答案。</h2>
+          <div class="archetype-grid">
+            <article><span>01</span><h3>快速模仿者</h3><p>想复制一个当下流行效果，追求最短路径。</p><small>需要：一键模板与素材替换</small></article>
+            <article><span>02</span><h3>效果收藏者</h3><p>先保存方法，未来遇到场景再使用。</p><small>需要：可检索的灵感与 Recipe</small></article>
+            <article><span>03</span><h3>内容经营者</h3><p>需要稳定更新，希望把单个效果变成系列。</p><small>需要：批量变化与一致性控制</small></article>
+            <article><span>04</span><h3>工作提效者</h3><p>关注交付速度、修改成本和商业可用性。</p><small>需要：结构化工作流与导出</small></article>
+            <article><span>05</span><h3>技术探索者</h3><p>关心模型边界，愿意调参并组合工具。</p><small>需要：透明参数与高级控制</small></article>
+            <article><span>06</span><h3>个人表达者</h3><p>希望把自己、关系与记忆转成独特视频。</p><small>需要：细腻定制与安全私密</small></article>
+          </div>
+        </section>
+
+        <section id="platforms" class="report-section">
+          <p class="report-chapter">06 / PLATFORM DIFFERENCES</p>
+          <h2>同一个视频，放在不同平台，会触发不同的问题。</h2>
+          <div class="platform-table" role="table" aria-label="平台差异对比">
+            <div role="row" class="table-head"><span role="columnheader">平台</span><span role="columnheader">主要观看语境</span><span role="columnheader">典型追问</span><span role="columnheader">适合的回应</span></div>
+            <div role="row"><b role="cell">TikTok</b><span role="cell">趋势、娱乐、快速模仿</span><span role="cell">How? Tutorial?</span><span role="cell">短步骤 + 可复用模板</span></div>
+            <div role="row"><b role="cell">Instagram</b><span role="cell">审美、个人品牌、收藏</span><span role="cell">Which app / preset?</span><span role="cell">高完成度案例 + 收藏入口</span></div>
+            <div role="row"><b role="cell">X</b><span role="cell">新能力展示、行业讨论</span><span role="cell">Model? Workflow?</span><span role="cell">过程拆解 + 能力边界</span></div>
+            <div role="row"><b role="cell">Reddit</b><span role="cell">经验验证、技术互助</span><span role="cell">Full settings / source?</span><span role="cell">透明细节 + 限制说明</span></div>
+            <div role="row"><b role="cell">抖音</b><span role="cell">情绪钩子、热点、实用教程</span><span role="cell">怎么做 / 什么软件？</span><span role="cell">中文场景化模板 + 结果对比</span></div>
+          </div>
+        </section>
+
+        <section id="strategy" class="report-section strategy-section">
+          <p class="report-chapter">07 / IMPLICATIONS FOR MEDEO</p>
+          <h2>把“求 Prompt”从评论信号，转成产品入口。</h2>
+          <div class="strategy-flow">
+            <article><span>01</span><h3>先卖结果想象</h3><p>用可一句话理解、能替换成用户自身场景的成片吸引注意。</p></article><i>→</i>
+            <article><span>02</span><h3>再展示可达路径</h3><p>明确工具与关键步骤，但保留能通过产品继续探索的空间。</p></article><i>→</i>
+            <article><span>03</span><h3>用 Recipe 接住意图</h3><p>一键复用后允许替换人物、场景、动作和视觉约束。</p></article><i>→</i>
+            <article><span>04</span><h3>把单次生成变成系列</h3><p>保存资产与结构，让用户从“做一条”走向稳定生产。</p></article>
+          </div>
+          <blockquote>最有价值的 Prompt，不是一段等待复制的文字，而是一条让用户理解、修改并持续生产的路径。</blockquote>
+        </section>
+
+        <section id="limits" class="report-section report-limits">
+          <p class="report-chapter">08 / METHOD & LIMITS</p>
+          <h2>研究方法与公开版边界</h2>
+          <div class="limits-grid">
+            <div><h3>方法</h3><p>跨平台观察 AI 视频内容、评论问法、发布者回应方式与可复用路径；通过开放编码归纳动机、信号与用户类型，再反推产品和内容策略。</p></div>
+            <div><h3>边界</h3><p>这是一份探索性定性研究，不代表平台总体分布，也不用于证明因果。公开版删除了无法稳定追溯来源的行业数字，并隐藏内部样本与账号信息。</p></div>
+            <div><h3>下一步</h3><p>可通过评论样本编码、访谈和模板落地实验继续验证：不同动机对应的产品入口，是否真正提升模板使用、二次编辑与持续生产。</p></div>
+          </div>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <footer class="report-footer"><span>GRIFFIN / PRODUCT OPERATIONS</span><a href="case-one2x.html">返回 One2X 案例 ↑</a></footer>
+</body>
+</html>
